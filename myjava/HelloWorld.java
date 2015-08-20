@@ -10,7 +10,14 @@
 public class HelloWorld{
     //find main function 
     public static void main(String args[]){
-	System.out.println("hello world");
+        int a = 10;
+	int b = 20;
+	int result = a + b;
+	long x = 100l;
+	char xs = 'жа';
+	int xsint = 'жа';
+	char output = (char)(xsint + 1);
+	System.out.println("hello world:" + result + xs + xsint + output);
     }
 }
 
