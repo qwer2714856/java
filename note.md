@@ -260,5 +260,116 @@ String a = new String();
 ===============================对象================================
 java面型对象编程 类与对象
 java面向对象编程 构造方法
+1.初步掌握java中的类和对象
+2.什么事成员变量和成员方法
+3.掌握构造方法的使用
+对象是复合数据类型 
+
+定义类
+class Cat{
+    //成员属性
+    int age;
+    String name;
+    String color;
+    //成员方法
+}
+
+Cat cat = new Cat();
+Cat是一个复合数据类型
+
+//类是对象抽象出来的，类要自己去定义，想有什么自己就定义什么,类是抽象的，代表一类事物。
+对象代表一个具体的事物。
+类是对象的模板，对象是类的个体实例。
+
+全面的类的定义
+package 包名
+class Cat extends Animal implements interface
+{
+    成员属性
+    构造方法
+    成员方法
+}
+引用数据类型
+class Cat{
+    int age;
+    String name;
+    String color;
+    Master myMaster;//猫的主人 对象的变量就是引用类型
+}
+class Master{
+   int age;
+   String name;
+   String adress
+}
 
 
+创建对象的两种方法
+1
+Cat cat1;//声明是Cat类型
+cat1 = new Cat();//创建Cat对象
+2
+Cat cat1 = new Cat();
+
+Parse p = new Parse();
+p.age = 1;
+Parse pClone;
+pCloen = p;\\赋值引用的时候也要注意他们是同一类型
+创建对象后，不管是否赋值都会分配内存空间，而这个分配的空间是根据类重定义的内容。java 对象如果有多个引用都指向这个对象那么如果一个引用改变了对象的某个值所有的引用都将改变，和js有些不一样。
+
+类和对象的关系
+类是模板创建出很多对象，人是上帝，用模板创建了对象放进内存。
+java有自己的垃圾回收，不需要手动，当java虚拟机发现有一个对象没有指向就是垃圾。
+Parse p = new Parse();
+p = null;
+这个时候被创建的这个对象就成垃圾了
+适当的时候将其回收，垃圾回收有自己的机制。
+垃圾回收是jvm自己调用，当它觉得内存不够了它就出来回收下。
+
+
+
+类的成员方法
+语法
+成员方法也叫成员函数。
+可见性 返回函数类型 方法名（参数列表）{
+语句；//方法函数主体
+}
+class P{
+    int age;
+    String name;
+    public void spack(){
+        System.out.println("我是好人");
+    }
+    //计算
+    public void jisuan(){
+        int result = 0;
+        for(int i = 0; i < 1000; i++){
+            result += i;
+        }
+       System.out.println(result);
+    }  
+    //接收参数
+    public void jisuan(int count){
+       int result = 0;
+       for(int i = 0; i < count; i++){
+	    result += i;
+        }
+	System.out.println(result);
+    }
+    //返回类型的
+    public int jisuan(int count){
+        
+    }
+}
+P p = new P();
+p.spack();
+
+//类内的同名方法，但是参数不同,不同叫做重载,如果非参数不同而名字相同返回类型不同也报错。只能是参数不同才能叫重载。
+
+
+//函数调用的原理图
+p.jisuan(1);
+函数会开一个新栈，和main函数完全独立的栈空间，去新栈执行jisuan内部的代码在按照顺序执行当执,而且来讲函数内部的int 变量也会在新栈中声明和定义所以和主函数没有关系，独立的栈空间。当这个函数执行后，它会回到调用它的那个区域去,然后在继续在调用的那个区域执行知道main函数执行结束。
+
+
+=========================作用域=======================
+//作用于的概念 函数作用域
