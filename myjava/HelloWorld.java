@@ -9,7 +9,7 @@
 //HelloWorld class name must with file name same
 public class HelloWorld{
     //find main function 
-    public static void main(String args[]){
+    public static void main(String []args){
         int a = 10;
 	int b = 20;
 	int result = a + b;

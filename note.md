@@ -187,3 +187,69 @@ int b = a + 3.4;
 低精度和高精度进行预算会自动往高精度转换
 然后高精度有给低精度了所以又报错了
 
+
+算数运算符
++-*/%
+a++
+a--
+++a
+--a
+
+b+=a
+b-=a
+b/=a
+b%=a
+
+
+==
+>=
+<=
+!=
+>
+<
+
+System.out.println输出
+输入
+import java.io.InputStreamReader;
+import java.io.BufferedReader;
+import java.io.IOException;
+
+try{
+InputStreamReader io = new InputStreamReader(System.in);//System.in标准输入
+BufferedReader rd = new BufferedReader(io);
+
+//读取
+String a1 = rd.readLine();
+String a2 = rd.readLine();
+
+float d1= Float.parseFloat(a1)
+float d2 = Float.parseFloat(a2)
+}catch(Execption e){
+    e.printStackTrace();
+}
+
+
+什么是包？
+是类的包装
+
+
+&& || !
+
+if else switch
+
+switch 条件表达式
+数据类switch(a)
+应该和case 常量类型一致
+switch(data)
+data是有限制的
+byte short init char enum 等
+
+
+编程复杂问题
+先将复杂问题查分成若干简单问题在做
+死去活来法比较复杂的现限定小的范围找规律在放大
+
+String a = "";
+String a = new String();
+区别在与第一句会先去内存里面找是否有这个值有就指向它没有就创建。
+第二句不关有没有都要在内存里面开辟一块新的区域用来存储它。
