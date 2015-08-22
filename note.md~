@@ -504,6 +504,118 @@ protected
 
 
 包的必要性
+多人同时开发，同时起一样的类名就容易造成冲突。
+在同一个包下面建立两个名字相同的class就会报错
+即使不是同一个file定义同名的class也不行，必须分包定义。
+新建一个包在eclipse
+包的命名com.xiaoming.a.a.a.a这个可以一直延伸下去但是最好不要超过5层。
+com.xiaoming 
+com.xiaoqiang
+他们都隶属于com但是他们又有他们自己的空间，这个时候小强和小明可以在自己的的包下建类这个时候他们彼此建一样的类也不会报错了。
+现在如果在他们彼此的包下建立class eclipse会自动加上打包命令
+例如
+package com.xiaoqiang
+package com.xiaoming
+作用会将类生成的字节码放到com.xiaoqiang,或者com.xiaoming里面去。
+常用的包
+java.lang.* 自动引入
+java.net.* 网络开发
+java.util.* 工具包
+java.awt.*窗口工具包
+
+引入包
+import java.util.*
+
+系统的类都放在哪？
+系统会引入一个CLASSPATH的环境变量那个倒是是个什么？
+其实是别人写好一堆编译好的class 打成了一个.jar file 你去引用。 
+jre/lib/rt.jar不需要加入classpath默认就能找到
+
+================================================================================
+
+这JDK的配置CLASSPATH中的dt.jar和tools.jar这两个文件到底是干什么的，有人说这个dt.jar是关于swing的 打开这个包确实可以看到和swing有关的类，说是如果用到swing就要配置这classpath，但是rt.jar中的swing呢 这个不才是真正的包含swing类库吗？ 还有就是这两个包到底是用作开发的类库，还是JDK中的JAVAC等程序运行要的类库。 如果不路径这两个包对我们开发的程序中有什么影响?
+
+———————————————————————————————
+
+答：dt.jar和tools.jar是两个java最基本的包，里面包含了从java最重要的lang包到各种高级功能如可视化的swing包，是java必不可少的。
+而path下面的bin里面都是java的可执行的编译器及其工具，如java，javadoc等，你在任意的文件夹下面运行cmd键入javac，系统就能自动召见java的编译器就是归功于这个环境变量的设置  
+
+rt.jar是JAVA基础类库，dt.jar是关于运行环境的类库，tools.jar是工具类库  
+
+设置在classpath里是为了让你 import *  
+———————————————————————————————
+
+web系统都用到tool.jar  
+
+你用winrar看看里面是什么内容啦  
+---------------------------------------------------------------  
+
+1.  
+rt.jar 默认就在 根classloader的加载路径里面 放在claspath是多此一举  
+不信你可以去掉classpath里面的rt.jar  
+
+然后用 java -verbose XXXX 的方式运行一个简单的类 就知道 JVM的系统根Loader的路径里面  
+
+不光rt.jar jre/lib下面的大部分jar 都在这个路径里   
+
+2.  
+
+tools.jar 是系统用来编译一个类的时候用到的 也就是javac的时候用到  
+
+javac XXX.java  
+
+实际上就是运行   
+
+java -Calsspath=%JAVA_HOME%/lib/tools.jar xx.xxx.Main XXX.java   
+
+javac就是对上面命令的封装 所以tools.jar 也不用加到classpath里面  
+
+3.  
+dt.jar是关于运行环境的类库,主要是swing的包 你要用到swing时最好加上  
+
+
+dt.jar好像是swing的一些什么类，Eclipse开发环境默认的JRE也没有包括它。应该没用。
+tools.jar应用服务器用来编译JSP文件，应用服务器自己会加载，不需要自己设置。
+
+
+关于path和classpath的含义：  
+1.path变量的含义就是系统在任何路径下都可以识别java,javac命令  
+2.classpath变量的含义是告诉jvm要使用或执行的class放在什么路径上，便于JVM加载class文件，.;表示当前路径，tools.jar和dt.jar为类库路径。如果不用Swing里面的东西，可以不加dt.jar。 tools.jar里面是最基本的工具类，比如javac，不加是无法做开发的。  
+
+
+ 1. rt.jar 默认就在 根classloader的加载路径里面 放在claspath是多此一举 不信你可以去掉classpath里面的rt.jar 然后用 java -verbose **X 的方式运行一个简单的类 就知道 JVM的系统根Loader的路径里面 不光rt.jar jre/lib下面的大部分jar 都在这个路径里   
+ 2. tools.jar 是系统用来编译一个类的时候用到的 也就是javac的时候用到 javac **.java 实际上就是运行 java -Calsspath=%JAVA_HOME%/lib/tools.jar xx.**.Main **.java javac就是对上面命令的封装 所以tools.jar 也不用加到classpath里面  
+ 3. dt.jar是关于运行环境的类库,主要是swing的包 你要用到swing时最好加上  
+
+
+dt.jar是关于运行环境的类库,主要是swing的包 
+tools.jar是关于一些工具的类库 
+rt.jar包含了jdk的基础类库，也就是你在java doc里面看到的所有的类的class文件
+
+编译和运行需要的都是toos.jar里面的类 , 分别是   
+  sun.tools.java.*;   
+  sun.tools.javac.*;
+
+
+
+!!!如果找不到类可以手动的指定一下CLASSPATH
+============================================================================
+
+
+
+
+
+1.区分相同名字的类
+2.类很多的话很好管理类
+3.控制访问范围
+eclipse
+java 最后的项目是以工程的形式管理的，不过多大的项目，散列的file是没有意义的。
+设置字体
+window->preferences->general->appearance->colors and fonts->basic->Text font
+在class file里面打/** 回车就自动生成一些注释
+在注释里面打一个@附后会提示好多内容
+关于使用eclipse的类编译
+当你保存的时候就会自动编译,相当于javac
 
 =========================作用域=======================
 //作用于的概念 函数作用域
