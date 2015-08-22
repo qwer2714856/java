@@ -17,13 +17,14 @@ public class constructor{
     }
 }
 class Parse{
-    private static int total = 0;
+    public static int total = 0;
     public Parse(int a){
 	
 	System.out.println("a");
     }
     public Parse(int a, float b){
-	this.total++;
+	total++;
+
 	System.out.println("b");
     }
 }

@@ -23,7 +23,8 @@ class Parse{
 	System.out.println("a");
     }
     public Parse(int a, float b){
-	this.total++;
+	Parse.total++;
+
 	System.out.println("b");
     }
 }
