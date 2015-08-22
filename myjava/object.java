@@ -23,6 +23,9 @@ class Cat{
     public int count(int a){
 	return 1;
     }
+    public float add3(int a, float b){
+	return a + b;
+    }
 }
 
 public class object{
@@ -40,7 +43,7 @@ public class object{
 	cat2.color = "red";
         
 	cat1.count();
-
+	float s = cat1.add3(1,1.1F);
 	
     }
 }
