@@ -12,5 +12,11 @@ public class xiaoqiang {
 
 }
 class Dog{
-	
+	public int a = 1;
+	protected int b = 2;
+	int c = 3;
+	private int d = 4;
+	public void say(){
+		System.out.println(this.d);
+	}
 }

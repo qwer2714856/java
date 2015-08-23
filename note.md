@@ -496,12 +496,12 @@ protected
 默认
 
 4中访问级别的范围
-访问级别       访问控制器       同类       同包        子类       不同包
-公开           public           可以访问   可以访问    可以访问   可以访问
-受保护         protected        可以访问   可以访问    可以访问   不可以访问
-默认           没有修饰符       可以访问   可以访问    不可以访问 不可以访问
-私有           private          可以访问   不可以访问  不可以访问 不可以访问
-
+访问级别       访问控制器       同类       同包       不同包子类 同包子类   不同包
+公开           public           可以访问   可以访问   可以访问   可以访问   可以访问
+受保护         protected        可以访问   可以访问   可以访问   可以访问   不可以访问
+默认           没有修饰符       可以访问   可以访问   不可以访问 可以访问 不可以访问
+私有           private          可以访问   不可以访问 不可以访问 不可以访问 不可以访问
+http://xuyanzhi6688.blog.163.com/blog/static/2920588920115178519198/
 
 包的必要性
 多人同时开发，同时起一样的类名就容易造成冲突。
@@ -601,13 +601,117 @@ rt.jar包含了jdk的基础类库，也就是你在java doc里面看到的所有的类的class文件
 !!!如果找不到类可以手动的指定一下CLASSPATH
 ============================================================================
 
+跨包访问
+com.xiaoqiang.ssl v = new com.xiaoqiang.ssl();
+System.out.println(v.m);
+xiaoqiang 这个包下面的ssl类必须是public否则没有办法访问
+m也必须是public
+com.xiaoqiang.ssl这样写十分的麻烦可以一步到位，
+顶部
+import com.xiaoqiang.ssl
+只有类文件内部的类可以设置protected/private。
+public class Test
+{
+    public static void main(String[] args)
+    {
+        ........
+    }  
+    private class Protected
+    {
+        protected String s = "Thinking in Java.";
+    }
+}
+
+
+继承
+为什么要继承
+//当有多个类有共同属性的时候就需要抽象出来，然后子类去继承它。
+class 继承  extends
+注意事项：
+1.子类最多只能继承一个父类（单继承）
+2.java所有类都是Object类的子类
+3.jdk中有大约202个包3777个类、接口、异常、枚举、注释和错误。
+4.在做开发强力建议使用JDK帮助能手册
+
+在开发中自己定义的一些类必须要继承别人
+package luchao;
+import javax.swing.*;
+public class jFrame extends JFrame{
+
+	/**
+	 * @param args
+	 */
+	public static void main(String[] args) {
+		// TODO Auto-generated method stub
+		jFrame jframe = new jFrame();
+		jframe.show();
+	}
+	
+	public jFrame(){
+		this.setVisible(true);
+		this.setSize(200,200);
+	}
+
+}
 
 
 
-
+包的特点
 1.区分相同名字的类
 2.类很多的话很好管理类
 3.控制访问范围
+
+
+
+方法的重载，覆盖。
+重载：
+方法参数不同方法名字相同，即为重载。
+abc.getMax(12,4.5f)
+
+public int getMax(int i, int j)
+{
+
+}
+public float getMax(float i, float j){
+
+}
+当调用的时候回调用下面这个因为int i 可以向高精度的float转。
+
+简单的说，类的同一种功能的多个实现方式，使用哪个在于调用者传的参数。
+1.方法名相同。
+2.方法的参数、类型、个数、顺序至少有一个不同。
+3.方法的返回类型可以不同。
+4.方法的修饰符可以不同。
+
+覆盖：
+实际就是子类重写父类的方法。
+
+class Animal{
+	int age;
+	String name;
+	//jiao 
+	public void jiao(){
+		System.out.println("叫");
+	}
+	
+}
+//猫猫叫
+class Cat extends Animal{
+	public void jiao(){
+		System.out.println("喵喵");
+	}
+	
+}
+//汪汪叫
+class Dog extends Animal{
+	public void jiao(){
+		System.out.println("旺旺");
+	}
+}
+
+
+
+
 eclipse
 java 最后的项目是以工程的形式管理的，不过多大的项目，散列的file是没有意义的。
 设置字体
