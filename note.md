@@ -906,6 +906,118 @@ class Master{
 java允许父类的引用变量引用它子类的实例对象
 Animal a = new cat();
 
+抽象类、接口、final
+抽象类
+接口
+final
+
+抽象类
+abstract 修饰的类是抽象类，abstract 修饰的方法是抽象方法。
+抽象方法必须定义在抽象类里面。
+子类如果要继承抽象类则必须要实现抽象类里面的抽象方法.
+抽象类不能被实例化a
+抽象类可以有非抽象方法
+抽象类可以额没有抽象方法
+
+
+接口：
+接口是是特出的抽象类
+语法
+class 类名 implements interface{
+
+}
+一个重要的原则，当一个了实现了一个接口，那么这个类就必须实现改接口的所有方法都实现。
+package com.dlctest;
+
+public class implement {
+
+	/**
+	 * @param args
+	 */
+	public static void main(String[] args) {
+		// TODO Auto-generated method stub
+		Master p = new Master();
+		p.Use(new phone());
+	}
+
+}
+class xiangji implements UsbInterfaces{
+	public void start(){
+		System.out.println("相机开始");
+	}
+	public void stop(){
+		System.out.println("相机停止");
+	}
+}
+
+class phone implements UsbInterfaces{
+	public void start(){
+		System.out.println("手机开始");
+	}
+	public void stop(){
+		System.out.println("手机停止");
+	}
+}
+
+class Master{
+	public void Use(UsbInterfaces device){
+		device.start();
+		device.stop();
+	}
+}
+
+package com.dlctest;
+
+public interface UsbInterfaces {
+	public void start();
+	public void stop();
+}
+
+接口也体现了一种多态的行为看master
+
+注意事项
+1.接口不能被实例化。
+2.接口所有方法也不能有主体 a();
+3.抽象类可以有实现的方法，接口不可以有，必须只有非实现方法。
+4.接口是更加抽象的抽象类
+5.一个类可以实现多个接口 implements a,b
+6.接口中可有变量,接口里面不能直接写int a;这样定义变量，int a = 1;
+就ok了，解释一下，首先说一下
+接口中可以有变量但不能用private 和 protected 的修饰符
+a接口中的变量，本质上都是static和final类型,不管你加不加在接口中，作为全局变量使用。访问的形式：接口名.变量名(这是个技巧，因为它作为全局存在)
+一个接口不能继承其他类，但是可以继承别的接口。
+接口继承接口
+
+interface UsbInterfaces extends hi 这样定义接口继承是ok的
+如果
+class xiangji implements UsbInterfaces extends hi 这样就报错了原因是不能再继承类上实现的接口在继承接口.
+java 没有多继承所以使用接口就可以弥补这一点
+class x implements a,b,c 可以同时实现多个接口的方法。
+当实现接口的时候没有实现方法会报错，可以点击那个错误然后选择add ...
+
+用接口体现多态
+前期绑定在编译的时候确定类型的。
+后期绑定例如说多态 a(interfaces car) 这个定义的一个接口变量在前期的时候不知道它会传递那个对象只有运行才能根据实参确认这样的叫做后期绑定
+
+final的使用
+最后的最终的
+可以修饰变量和方法
+1.当不希望父类的某个方法被子类覆盖，可以用final
+2.当不希望类的某个值修改，如果是变量是final的必须赋值初值否则没有办法编译,final 修饰的变量一般叫做常量我们一般使用aaa_bbb_ccc命名，如果定义以后是没有办法在赋值的。
+
+什么时候考虑用
+安全的考虑
+不希望别人修改
+不希望别人继承
+某些变量值是固定
+3.当不希望被继承 final class a别人没有办法继承。
+
+int a 如果不给初值是多少？
+默认0
+
+
+
+
 
 
 
