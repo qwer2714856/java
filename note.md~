@@ -1015,9 +1015,38 @@ final的使用
 int a 如果不给初值是多少？
 默认0
 
+==========================================================================
+数组
+一维数组
+[] arr , arr [] 都可以
+int arr[] = new int[6];
+定义一个定长的int类型的数组长度是6
+内存里面开辟一个arr的int类型的空间长度是6,每一个单元都是int类型
+从0开始算
+数组不能越界访问
+如何知道数组大小
+arr.length; 
+
+int a [] = {1,2,3,4,5,6,7,8,9};
+相当于
+int a [] = new int [9];
+然后用for a[i]赋值上面的那个简单
+
+对象数组：
+定义个类
+class Dog{
+    String name;
+}
+定义对象数组
+Dog a [] = new Dog[5]//定长的5个。 
+a[0] = new Dog();
+Dog [] a = {new Dog()};//不定长的。
 
 
 
+排序，查找
+
+多维数组
 
 
 
@@ -1029,6 +1058,17 @@ window->preferences->general->appearance->colors and fonts->basic->Text font
 在注释里面打一个@附后会提示好多内容
 关于使用eclipse的类编译
 当你保存的时候就会自动编译,相当于javac
+
+重命名file
+右键 file->refactor->rename
+
+补全快捷键
+edit->content Assist->default
+
+快捷键设置
+window->preferences->General->keys 找到对应的功能点击就可以修改
+在Binding删除原来的然后安装alt ctrl或者其他的然后在按其他键
+
 
 =========================作用域=======================
 //作用于的概念 函数作用域
