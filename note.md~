@@ -824,9 +824,91 @@ class Linked{
 		
 	}
 }
- 
+  
 
 《《多态》》
+所谓多态，就是指一个引用(类型)在不同情况下的多种状态.
+你也可以这样理解：多态是通过指向父类的指针，来调用在不同子类实现方法。
+myeclipse 是 eclipse(开源) 的插件,myeclipse继承eclipse。
+自动为私有属性生成get 和 set
+定义
+private int age;
+private String name;
+鼠标选中
+右键->source->generate getters and setters->select all ->ok
+就会为你选中的私有属性定义get和set方法
+
+package luchao;
+/**
+ * 多态的综合例子
+ * @author ding.luchao
+ *
+ */
+public class duotai2 {
+
+	/**
+	 * @param args
+	 */
+	public static void main(String[] args) {
+		// TODO Auto-generated method stub
+		Master m = new Master();
+		m.w(new Dog4(), new gt());
+	}
+
+}
+class Animals3{
+	String name;
+	int age;
+	public void eat(Food zl){
+		System.out.println("我吃"+zl.getZl());
+	}
+}
+
+class Cat4 extends Animals3{
+	public void eat(Food zl){
+		System.out.println("猫吃"+zl.getZl());
+	}
+}
+class Dog4 extends Animals3{
+	public void eat(Food zl){
+		System.out.println("狗吃"+zl.getZl());
+	}
+}
+
+
+class Food{
+	String name;
+	public String getZl(){
+		return "";
+	}
+}
+
+class fash extends Food{
+	public String getZl(){
+		return "鱼肉";
+	}
+}
+class gt extends Food{
+	public String getZl(){
+		return "骨头肉";
+	}
+}
+
+
+class Master{
+	public void w(Animals3 a, Food b){
+		a.eat(b);
+	}
+}
+
+总结：
+精髓的一句，一个引用类型在不同情况下的多种状态。
+java允许父类的引用变量引用它子类的实例对象
+Animal a = new cat();
+
+
+
+
 eclipse
 java 最后的项目是以工程的形式管理的，不过多大的项目，散列的file是没有意义的。
 设置字体
