@@ -709,9 +709,124 @@ class Dog extends Animal{
 	}
 }
 
+简单的说：方法覆盖就是子类有一个方法，和父类的某个方法的 名称、返回值、参数一样，那么我们就说子类的这个方法覆盖了父类的那个方法。
+
+总的有两点
+1.子类的方法的返回类型，参数，方法名称要和父类的方法的返回值类型，名称，参数完全一样否则报错。
+2.子类的方法不能缩小父类的访问权限。
+例如父类是public 的方法子类不可以使用public以下的修饰符号复写方法.
+
+《《链表》》
+package luchao;
+
+public class lianbiao3 {
+
+	/**
+	 * @param args
+	 */
+	public static void main(String[] args) {
+		// TODO Auto-generated method stub
+		Linked ln = new Linked(5);
+		//ln.printForword();
+		//ln.printBackWord();
+		ln.play(2,2);
+	}
+
+}
+
+/**
+* Childed
+*/
+class Childed{
+	int no;
+	Childed nextChild;
+	Childed prevChild;
+	
+	public Childed(int i){
+		this.no = i;
+	}
+}
+/**
+* Link
+*/
+class Linked{
+	Childed firstChild;
+	Childed lastChild;
+	Childed temp;
+	Childed temp2;
+	int len;
+	//double linked list
+	public Linked(int len){
+		this.len = len;
+		for(int i = 1; i <= len; i++){
+			Childed c = new Childed(i);
+			if(i == 1){
+				//firstChild
+				this.firstChild = this.temp = c;
+			}else{
+				this.temp2 = this.temp;
+				this.temp.nextChild = c;
+				this.temp = c;
+				this.temp.prevChild = this.temp2;
+				//lastChild
+				if(i==len){
+					this.lastChild = this.temp;
+					this.temp.nextChild = this.firstChild;
+					this.firstChild.prevChild = this.temp;
+				}
+			}
+		}
+	}
+	public void printForword(){
+		Childed tmp = this.firstChild;
+		do{
+			System.out.println(tmp.no);
+			tmp = tmp.nextChild;
+		}while(tmp != this.firstChild);
+	}
+	public void printBackWord(){
+		Childed tmp = this.firstChild;
+		do{
+			System.out.println(tmp.no);
+			tmp = tmp.prevChild;
+		}while(tmp != this.firstChild);
+	}
+	
+	public void play(int k, int m){
+		Childed playTemp = this.firstChild;
+		Childed deleteChild = null;
+		//从k个人开始，数m下
+		if(k > 1){
+			for(int i = 1; i < k; i++){
+				playTemp = playTemp.nextChild;
+			}
+		}
+		
+		
+		while(this.len > 1){
+			if(m > 1){
+				for(int i = 1; i < m; i++){
+					playTemp = playTemp.nextChild;
+				}
+			}
+			
+			playTemp.prevChild.nextChild = playTemp.nextChild;
+			playTemp.nextChild.prevChild = playTemp.prevChild;
+			deleteChild = playTemp;
+			playTemp = playTemp.nextChild;
+			
+			System.out.println(deleteChild.no);
+			
+			this.len --;
+		}
+		System.out.println("==============");
+		System.out.println("last out:" + playTemp.no);
+		
+	}
+}
 
 
-
+《《多态》》
 eclipse
 java 最后的项目是以工程的形式管理的，不过多大的项目，散列的file是没有意义的。
 设置字体
