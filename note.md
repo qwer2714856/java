@@ -1048,6 +1048,240 @@ Dog [] a = {new Dog()};//不定长的。
 
 多维数组
 
+对象和字符串在比较的时候不能用==  他们比较的是地址
+需要用到一个函数
+equals
+str.equals("aaa")
+小结
+1.数组主要用处存放同一类型的数据。
+2.简单数据类型int float...数组,可以直接赋值
+3.对象数组定义后,赋值时需要再为每个对象分配空间即new一个
+4.数组大小必须事先确定,ArrayList可以解决
+ArrayList<String> list = new ArrayList<String>();
+这个就有String用别的类型都错误。
+5.数组名可以理解为指向数组地址的引用
+6.数组的下标是从0开始编号的。
+7.int a[] = new a[x];这个x可以事先定义，但是不不可以从控制台输入，它编译的时候就需要这个值。
+
+排序
+1.内部排序
+指将需要处理的所有数据都加载到内部存储器中进行排序。
+包括（交换排序，选择排序，插入排序）
+1.交换排序
+
+2.冒泡
+
+3.插入排序
+插入排序是内部排序，是对于排序元素以插入的方式找寻该元素的适当位置，已达到排序目的
+
+ 插入排序分为
+
+ 1.插入排序
+ 2.谢尔排序
+ 3.二叉树排序
+
+
+.快速排序
+
+
+其他排序
+
+选堆排序用树和堆的思想
+希尔排序法
+二叉树排序
+
+【大数据排序】
+合并排序
+直接合并排序
+
+
+
+
+//获取时间邮戳
+Calendar c1 = Calendar.getInstance();
+long c1s = c1.getTimeInMillis();
+比较两个时间间隔必须要在new一次
+Calendar c2 = Calendar.getInstance();
+long c1s2 = c2.getTimeInMillis();
+cls2-cls1即可
+
+java 是值传递，传递对象是传引用非指针。
+
+code
+    
+
+
+
+
+2.外部排序
+数据量大，没有办法加载到内存中，需要借助外部存储进行排序包括（合并排序，直接合并排序）
+
+
+
+=========================================================排序===========
+
+package array;
+import java.util.*;
+public class paixu {
+
+	/**
+	 * @param args
+	 */
+	public static void main(String[] args) {
+		// TODO Auto-generated method stub
+		Px p = new Px();
+		//获取时间
+		//单实例
+		//获取时间
+		Calendar c1 = Calendar.getInstance();
+		long c1s = c1.getTimeInMillis();
+		p.Ks(100000);
+		//p.Cr(100000);
+		//p.mp(100000);
+		//p.ks(100000);
+		//获取时间
+		Calendar c2 = Calendar.getInstance();
+		long c2s = c2.getTimeInMillis();
+		System.out.println("time="+(c2s-c1s));
+	}
+
+}
+
+class Px{
+	 
+	//冒泡排序 效率最低
+	public void mp(int count){
+		double a [] = new double[count];
+		for(int i = 0; i < a.length; i++){
+			a[i] = i * Math.random();
+		}
+		double tmp = 0.0;
+		for(int i = 0; i < a.length - 1; i++){
+			for(int j = 0; j < a.length - 1 -i; j++){
+				
+				if(a[j] > a[j+1]){
+					tmp = a[j];
+					a[j] = a[j+1];
+					a[j+1] = tmp;
+				}
+			}
+		}
+		for(int i = 0; i < a.length; i++){
+			System.out.println(a[i]);
+		}
+	}
+	
+	
+	//选择排序 效率比冒泡高
+	public void ks(int count){
+		double a [] = new double[count];
+		for(int i = 0; i < a.length; i++){
+			a[i] = i * Math.random();
+		}
+		double tmp = 0.0;
+		for(int i = 0; i < a.length-1; i++){
+			double temp = a[i];
+			int idx = i;
+			for(int j = i+1; j < a.length; j++){
+				
+				if(temp < a[j]){
+					temp = a[j];
+					idx = j;
+				}
+			}
+			tmp = a[i];
+			a[i] = a[idx];
+			a[idx] = tmp;
+		}
+		for(int i = 0; i < a.length; i++){
+			System.out.println(a[i]);
+		}
+	}
+	//插入排序
+	public void Cr(int count){
+		double a [] = new double[count];
+		for(int i = 0; i < a.length; i++){
+			a[i] = i * Math.random();
+		}
+				
+		//插入排序思想就是拿本身和前面的那写进行比较
+		for(int i = 1; i < a.length; i++){
+			double insertNode = a[i];
+			int prev = i - 1;
+			while(prev >= 0 && insertNode < a[prev]){
+				a[prev + 1] = a[prev];
+				prev --;
+			}
+			a[prev+1] = insertNode;
+		}
+		 
+		
+		for(int i = 0; i < a.length; i++){
+			System.out.println(a[i]);
+		}
+		
+	}
+	
+	//快速排序
+	public void Ks(int count){
+		double a [] = new double[count];
+		for(int i = 0; i < a.length; i++){
+			a[i] = i * Math.random();
+		}
+		
+		//核心思想就是取中间数左右两边，然后在取中间数左右两边。
+		this._ks(0, a.length-1,a);
+		
+		for(int i = 0; i < a.length; i++){
+			System.out.println(a[i]);
+		}
+	}
+	/**
+	 * 
+	 * @param left 左边下标
+	 * @param right 右边下标
+	 * @param arr 数组
+	 */
+	private void _ks(int left, int right, double arr []){
+		 int l =left;
+		 int r = right;
+		 double md = arr[(int)((l+r)/2)];
+		 double tmp;
+		 while(l < r){
+			 while(arr[l] < md)l++;
+			 while(arr[r] > md)r--;
+			 if(l >= r)break;
+			 tmp = arr[l];
+			 arr[l] = arr[r];
+			 arr[r] = tmp;
+		 }
+		if(l == r){
+			l++;
+			r--;
+		}
+		if(left < r) this._ks(left, r, arr);
+		if(right > l) this._ks(l, right, arr);
+	}
+	
+}
+
+=========================================================================
+
+
+查找
+
+顺序查找
+
+二分查找
+将没有序列的变为有序的然后在用二分查找
+思想就是先跟中间的比较然后在判断是左边找还是右边找，然后递归起来。
+
+
+
+
+
+异常
+三种，编译，运行，error
 
 
 eclipse
@@ -1068,6 +1302,9 @@ edit->content Assist->default
 快捷键设置
 window->preferences->General->keys 找到对应的功能点击就可以修改
 在Binding删除原来的然后安装alt ctrl或者其他的然后在按其他键
+
+包含try catch 块
+选择要包涵的代码语句，注意不能有注释，右键surround with try catch
 
 
 =========================作用域=======================
