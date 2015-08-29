@@ -1419,7 +1419,7 @@ public class question {
 		//Stack
 		//---------------Map结构------------
 		//HashMap
-		//HashTable
+		//Hashtable
 		//---------------Set结构------------
 		//HashSet
 		//TreeSet
@@ -1494,16 +1494,335 @@ System.exit(-1)
 0:正常退出
 非0:非0的代表异常退出
 
+LinkedList --栈个队列用这个
+比ArrayList 多了2个方法addFirst  addLast 往列表的头和尾部加入。栈和队列的概念
+                                 getFirst 从头取 getLast从尾取
 
-泛型 充分理解什么是泛型
+//非线程的性能高于线程的
+Vector 向量
+Vector vector = new Vector()
 
-异常 掌握java中的异常处理
+Stack 栈
+Stack stack = new Stack()
+
+Vector、Stack：线程安全
+ArrayList、LinkedList：非线程安全
+LinkedList：双向链表
+ArrayList，Vector，Stack：数组
+http://blog.csdn.net/a19881029/article/details/9408649
+
+HASH
+package jikekuangjia;
+import java.util.*;
+public class hash {
+
+	/**
+	 * @param args
+	 */
+	public static void main(String[] args) {
+		// TODO Auto-generated method stub
+		
+		HashMap hm = new HashMap();
+		
+		Emp emp1 = new Emp("ding.luchao",26,22.5f,001);
+	  
+		//将emp1放入hashMap里面
+		//key value
+		//value就是emp1对象
+		hm.put(emp1.getName(), emp1);
+		//注意这个有点是要说明的arraylist如果放入相同的内容是不会覆盖的，而HashMap如果放入相同的key 是回发生覆盖的
+		//key是唯一的
+		hm.put(emp1.getName(), emp1);
+		//查找ding.luchao的数据
+		if(hm.containsKey(emp1.getName())){
+			System.out.println("exists");
+			//取出数据
+			Emp getEmp = (Emp)hm.get(emp1.getName());
+			System.out.println(getEmp.getAge()+"--"+hm.size());
+		}
+		//遍历HashMap
+		//迭代器 
+		Iterator it = hm.keySet().iterator();
+		//是否存在下一个
+		while(it.hasNext()){
+			//取出key
+			String key = it.next().toString();
+			Emp tmp = (Emp)hm.get(key);
+			System.out.println(tmp.getAge());
+		}
+	}
+}
+class Emp{
+	private String name;
+	private int age;
+	private float pay;
+	private int num;
+	
+	public Emp(String name, int age, float pay, int num){
+		this.name = name;
+		this.age = age;
+		this.pay = pay;
+		this.num = num;
+	}
+	
+	public String getName() {
+		return name;
+	}
+	public void setName(String name) {
+		this.name = name;
+	}
+	public int getAge() {
+		return age;
+	}
+	public void setAge(int age) {
+		this.age = age;
+	}
+	public float getPay() {
+		return pay;
+	}
+	public void setPay(float pay) {
+		this.pay = pay;
+	}
+	public int getNum() {
+		return num;
+	}
+	public void setNum(int num) {
+		this.num = num;
+	}
+	
+}
+
+HashMap 和 Hashtable 用法上完全一致
+
+===================集合类的一些区别============
+HashMap 和 Hashtable的区别?
+相同点都可以用来存放java对象
+区分：
+1.Hashtable 是基于就的Dictionary类的，HashMap是java 1.2引进的Map接口的一个实现
+2.Hashtable 是同步的准确的说是线程同步。这个类中的一些方法保证了Hashtablez中的对象是线程安全的。
+HashMap是异步的，因此HashMap中的对象并不是线程安全的。因为同步需要浪费效率所以如果不需要线程的安全使用HashMap。
+3.HashMap可以让你的空值作为一个条目的key或value
+Hashtable不可以放入空值null
+
+ArrayList 和 Vectora 区别？
+相同点都可以用来存放java对象
+1.Vector 是同步的
+2.数据增长 自动增长 ArrayList 扩展50% Vector 扩展 1倍
+例如将在向数组增加一个就满了，它会自动在扩展一些空间出来，但是如果说你没有装满它扩展的空间，它也会占那么大的地方。
+Vector 1个满了变2个，2个满了变4个四个满了变8个。。。。
+ArryList 是50%
+所以看出来如果大数据量用Vector比较有优势，自增的几率小。
+但是如果是小数据量用Vector 会造成空间浪费。
+所以你创建后实际的空间会大，因为它自动给你创建了一部分空间了
 
 
+总结一把
+1.如果要求线程安全就用Vector Hashtable
+2.如果不要求线程ArrayList LinkedList HashMap
+3.键值对HashMap HashTable
+4.数据量大同时线程安全就用Vector,如果数量大不用考虑线程安全也用Vector吧，减小自动开辟空间的几率。
+
+补充一下
+数据集合接口List Map Set Queue
+所以可以
+List a = new ArrayList();
+List b = new LinkedList();
+当然a,b只能访问它们接口定义的方法，它们独子的方法是获取不到的。
+
+
+脏数据
+多个线程在没有防护的情况下，同时操作一个数据。
+用锁的概念在做防护
+当一个线程在工作其他的线程需要等待.
+
+
+
+
+泛型(好些个类型泛泛) 充分理解什么是泛型
+泛型的好处在编译的时候检查类型安全，并且所有的强制转换都是自动和隐式的，提高代码重用性,注意如果是int 这里是<Integer>。
+package jikekuangjia;
+import java.util.*;
+public class fanxing {
+
+	/**
+	 * @param args
+	 */
+	public static void main(String[] args) {
+		// TODO Auto-generated method stub
+		ArrayList dogList = new ArrayList();
+		Dog dog1 = new Dog();
+		//放入到集合中
+		dogList.add(dog1);
+		//取注意这里有个强转的动作,如果不强转就报错了,这里有个安全隐患。
+		Dog tmp = (Dog)dogList.get(0);
+		//注意看这个安全隐患
+		/*Exception in thread "main" java.lang.ClassCastException: jikekuangjia.Dog cannot be cast to jikekuangjia.Cat
+	at jikekuangjia.fanxing.main(fanxing.java:17)*/
+		//编译的时候不知道放的是什么玩意所以运行就报错了
+		Cat cat1 = (Cat)dogList.get(0);//这样看是没有问题的，但是如果运行会报出类型转换失败，为什么，因为狗强转猫。
+		
+		//解决这个问题可以用泛型
+		//如果声明改为 ArrayList<Dog> dogList = new ArrayList<Dog>();
+		//那么Cat cat1 = (Cat)dogList.get(0);就会报错
+		//“<类型>” 这个就是泛型
+		//Dog tmp = dogList.get(0); 这里也不用(Dog)强转了。
+		
+		
+		
+		
+	}
+
+}
+class Cat{
+	private String name;
+	public String getName() {
+		return name;
+	}
+	public void setName(String name) {
+		this.name = name;
+	}
+	public String getColor() {
+		return color;
+	}
+	public void setColor(String color) {
+		this.color = color;
+	}
+	private String color;
+}
+class Dog{
+	private String name;
+	public String getName() {
+		return name;
+	}
+	public void setName(String name) {
+		this.name = name;
+	}
+	public int getAge() {
+		return age;
+	}
+	public void setAge(int age) {
+		this.age = age;
+	}
+	private int age;
+	
+}
+
+理解泛型就是一类广泛的类型你传给它什么，它就是个什么。
+例如
+//定义个一个类  <T>是个类型，但是不知道具体是个什么类型
+class Gen<T>{
+	private T c;
+	public Gen(T str){
+		this.c = str;
+	}
+	//得到T类型的名称
+	public void getC(){
+		System.out.println(this.c.getClass().getName());
+	}
+}
+调用的是Gen<Integer> a = new Gen<Integer>(2);
+这里还会在编译的时候检查实参你传的是不是一个Integer类型。即对(2)检查
+a.getC();
+这里泛型指的是integer因为传了一个integer
+实例的变量.getClass().getName();//得到类型
+Integer a = 1;
+a.getClass().getName();//获取类的名称
+<中的值>必须是类名字例如Integer Float Boolean等等
+类的形参可以是任意但是实参传的时候必须是类型
+class SQL<T>
+SQL<String>
+这个时候T就是个String
+java的反射机制，也是java的经典用法。
+以上面的那个代码块为例
+this.c.getClass().这里有很多获取（this.c这个值的）类一些方法。
+this.c其实就一个实例2是Integer的实例""是String的实例
+实例.getClass().通过值反射到类得到一些类的信息。
+例如
+import java.lang.reflect.Method; 反射机制的包
+Method [] a = this.c.getClass().getMethods();
+//得到的是一个Integer类里面的方法
+Method [] a = this.c.getClass().getMethods();
+//打印
+for(int i=0; i<a.length; i++){
+    System.out.println("方法"+a[i].getName());
+}
+通过反射机制了解类的很多信息
+
+在定义类的时候如果没有办法确认某些属性的类型就需要使用泛型
+class A<不知道什么类型>{
+ private 不知道什么类型 a;
+}
+A<传入确认的类例如String> a = new A<传入确认的类例如String>(实例这个时候编译器就会对这个实例进行检查查看这个值是否是String的实例)
+
+这个时候
+class A<这个确认的类型就确认下来了>
+感觉这个用在多态蛮好的
+
+总结
+1.类型安全
+2.向后兼容
+3.层次清惜
+4.性能较高，用泛型java编写的代码可以为java编译器和虚拟机带来更多信息(反射信息)，这些信息对java程序做进一步优化提供条件。
+
+
+异常 掌握java中的异常处理 当出现程序没有办法控制的外部环境问题（用户提供的file不存在，file内容损坏、网络问题等等）时,java就会用异常对象来描述。
+java中处理异常的2种方法
+1.在发生异常的地方处理。
+2.将异常抛给调用者，让调用者处理。
+使用好异常，代码会很健壮。
 
 异常
-三种，编译，运行，error
+三种，检查性异常，运行期异常，错误
+检查性异常：java.lang.Exception 编译的时候就会检查可能会有异常的地方要求调用者必须解决。
+运行期异常: java.lang.RuntimeException 编译期没有办法发现的,运行的时候才发现，例如数组越界。
+错误:java.lang.Error 错误是最难检查到的。
+顶层的是java.lang.Throwable这几种异常都是它的孙类。
+java.lang.Exception 和 java.lang.Error继承java.lang.Throwable
+java.lang.runtimeExcetion 继承 java.lang.Excetion
 
+
+//检查性异常这个不是程序的错，因为例如网络连不通，文件打不开等等
+		//而很可能是远程的修改等等
+		//打开一个不存在的文件
+		//编译器很聪明，它在想它如果找不到这个文件怎么办，所以它要求你处理如果找不到的异常。
+		//这种就是检查性异常，编译期就报错了。
+		//FileReader fr = new FileReader("d:\a.txt");
+		//连接IP
+		//他认为你可能写错了所以你要处理
+		//Socket sock = new Socket("127.0.0.1", 80);
+		//编译器先期可以预见的异常
+		
+		
+		
+		//运行异常--只有在运行的时候才能知道 必须处理
+		//例如数组越界，0被除
+		//int a = 4 / 0;//代码没有错运行起来就报错了
+		/*Exception in thread "main" java.lang.ArithmeticException: / by zero
+	at trys.main(trys.java:25)*/
+		//int [] as = new int[10];//数组越界
+		//System.out.println(as[100]);
+		/*
+		 Exception in thread "main" java.lang.ArrayIndexOutOfBoundsException: 100
+	at trys.main(trys.java:29)
+		  */
+		
+		
+		//真正的错误，源于程序的BUG可能程序耗尽了。
+		//例如程序排序，调内存这个时候内存耗尽。
+		//最不好调的，有的跟环境有很大关系，死活起不来，有的被外部环境挡死，杀毒软件等等。
+		
+		
+		
+		//捕获异常 的解决方案
+		//当程序错误的点开始中断
+		//解决
+		//1.try catch
+		//2.使用 throw扔给调用者
+		try{
+			
+		}catch(Exception e){
+			
+		}
 
 
 
@@ -1536,6 +1855,7 @@ window->preferences->General->keys 找到对应的功能点击就可以修改
 查看某个方法是怎么写的？
 选中方法名字右键->open Dedaration
 
+当由于没有引包引发错误，点击前面的那个小*号出来有个import点击会自动引入包
 
 =========================作用域=======================
 //作用于的概念 函数作用域
