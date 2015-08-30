@@ -1780,8 +1780,16 @@ java中处理异常的2种方法
 java.lang.Exception 和 java.lang.Error继承java.lang.Throwable
 java.lang.runtimeExcetion 继承 java.lang.Excetion
 
+import java.io.*;
+import java.net.*;
+public class trys {
 
-//检查性异常这个不是程序的错，因为例如网络连不通，文件打不开等等
+	/**
+	 * @param args
+	 */
+	public static void main(String[] args) {
+		// TODO Auto-generated method stub
+		//检查性异常这个不是程序的错，因为例如网络连不通，文件打不开等等
 		//而很可能是远程的修改等等
 		//打开一个不存在的文件
 		//编译器很聪明，它在想它如果找不到这个文件怎么办，所以它要求你处理如果找不到的异常。
@@ -1818,11 +1826,72 @@ java.lang.runtimeExcetion 继承 java.lang.Excetion
 		//解决
 		//1.try catch
 		//2.使用 throw扔给调用者
-		try{
+		//最大捕获，不关什么错误多都让Exception来捕获，常用！
+		/*try{
+			FileReader fr = new FileReader("d:/a.txt");
+		}catch(Exception e){//这是个最大捕获,不关什么异常统统让catch捕获
+			//输出异常信息，易于排错
+			//e.getMessage 输出错误信息 需要System.out.println
+			//e.printStackTrace() 直接就输出错误信息
 			
-		}catch(Exception e){
-			
+		}*/
+		
+		//最小捕获,不用大Exception而是用对应的错误捕获,有什么异常就捕获什没异常。	
+		/*try {
+			FileReader fr = new FileReader("d:/a.txt");
+			Socket sock = new Socket("127.0.0.1", 80);
+		} catch (FileNotFoundException e) {//最小捕获针对一种错误如果里面还有其他错误，这种捕获是不够的
+			// TODO: handle exception
+			e.printStackTrace();
+		} catch(IOException e){//多种错误如果要用最小的精确捕获，就需要使用多个catch来分别捕获。
+			e.printStackTrace();
+		}*/
+	
+		//建议不用分着么细致,直接用Exception捕获所有的。
+
+		//finally
+		FileReader fr = null;
+		try {
+			fr = new FileReader("d:/a.txt");
+		} catch (Exception e) {
+			// TODO: handle exception
+		} finally{//不关是不是出现了异常统统走这个，这个作用很显而易见，一般说把需要关闭的资源，【文件，内存，数据库等等】。
+			 if(fr != null){
+				 try{
+					 fr.close();//关闭资源是必须的不关是否成功
+				 }catch(Exception e){
+					 
+				 }
+			 }
 		}
+		
+		//try catch finally 不一定要三者都必须出现
+		//一般必须这三者一起出现
+		
+		//以下几个情况finally 不一定被执行
+		//finally 块中发生了异常
+		//程序所在的线程死亡
+		//在代码中使用Systen.exit(Number)
+		//关闭cpu
+		
+		
+		
+		
+		
+	}
+}
+class test{
+		//抛给调用者 -- throws Exception
+		//谁调用test类的hi方法，谁就要负责解决它
+	    //如果调用者都不想关这个异常就交给虚拟机了
+		public void hi() throws Exception
+		{
+			FileReader fr = new FileReader("d:/a.txt");
+		}
+}
+
+//如果 printStackTrace()报出了很多错误注意第一个开始报错的位置，因为其他很可能是调用它出了错误
+
 
 
 
@@ -1856,6 +1925,14 @@ window->preferences->General->keys 找到对应的功能点击就可以修改
 选中方法名字右键->open Dedaration
 
 当由于没有引包引发错误，点击前面的那个小*号出来有个import点击会自动引入包
+
+try 的快捷键
+打一个try 然后按助手建我设置的是alt+/ 直接出现补全就可以
+
+显示行号
+右键左侧边的竖线->show Line Numbers
+
+如果想知道什么类型的异常将鼠标放到错误的波浪线上上面就有提示了直接捕获就可以
 
 =========================作用域=======================
 //作用于的概念 函数作用域
