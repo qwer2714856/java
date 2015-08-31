@@ -265,7 +265,34 @@ java面向对象编程 构造方法
 3.掌握构造方法的使用
 对象是复合数据类型 
 
-定义类
+子类调用父类的构造方法可以用super
+如果希望在子类中，去调用父类的构造方法，要求在子类的构造函数调用。
+
+public class aaa {
+
+	/**
+	 * @param args
+	 */
+	public static void main(String[] args) {
+		// TODO Auto-generated method stub
+		child a = new child();
+		System.out.println(a.a);
+	}
+
+}
+class parent{
+	int a = 1;
+	public parent(int a){
+		this.a = a;
+	}
+}
+class child extends parent{
+	public child(){
+		super(10);
+	}
+}
+
+
 class Cat{
     //成员属性
     int age;
@@ -1052,6 +1079,10 @@ Dog [] a = {new Dog()};//不定长的。
 需要用到一个函数
 equals
 str.equals("aaa")
+equals 是区分大小的
+不区分大小的是
+equalsIgnoreCase
+
 小结
 1.数组主要用处存放同一类型的数据。
 2.简单数据类型int float...数组,可以直接赋值
@@ -1892,6 +1923,49 @@ class test{
 
 //如果 printStackTrace()报出了很多错误注意第一个开始报错的位置，因为其他很可能是调用它出了错误
 
+
+InputStreamReader ipt = new InputStreamReader(System.in);
+BufferedReader rd = new BufferedReader(ipt);
+rd.close关闭输入流。关闭它就不用关闭ipt了
+
+
+一个数组分数的值删除
+其实可以换一种思想，将改值设为-1即可
+
+switch 的判断优良中差 可以将分数/10得到的一个int就能够明确知道是哪个分数段的。
+
+二维数组的赋值
+int a[][] = {{1,2,3,4},{1,2,3,4},{1,2,3,4}}
+
+java m a b
+public static void main(String [] args){
+    System.out.println(args[0]);
+}
+
+public int hi(){
+try{
+
+}catch(){
+    return -1;
+}finally{
+    System.out.println("aa");
+}
+}
+当调用hi的时候返回的是aa在返回-1，原因是除了中断程序或者卡死程序必须要执行finally所以这个时候先打印在返回-1.
+
+===字符串池子的问题
+当声明为
+String c = "abcd";
+它先去堆区字符串池找abc的值，然后如果找到将地址赋值给c.
+String b = "abcd";
+c == b;
+String d = "abc";
+d+="d"
+a != d 因为d 定义的时候就决定了它和c不是一个地址而是新开的一个地址。
+
+String f = new String("abcd");
+
+f!=a当你使用了new 压根就不进字符串池子
 
 
 
