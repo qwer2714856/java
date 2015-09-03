@@ -1996,6 +1996,13 @@ this.lb = new JLabel("<html><a href=''>aaa</a></html>",JLabel.CENTER);
 this.lb.setFont(new Font("宋体",Font.PLAIN,16));
 this.lb.setForeground(Color.red);
 this.lb.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+===================================坦克大战================================
+1.写需求
+学习项目的应该先学会拆，将功能模块拆解成多个小模块，然后去琢磨，最后拼装成自己的东西。
+技术===========
+1.java绘图坐标体系
+java绘图的坐标系的原点是基于弹出窗口的左上脚，而弹出框的是基于屏幕的。
+
 
 
 eclipse
