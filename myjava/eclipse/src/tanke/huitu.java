@@ -23,6 +23,7 @@ import javax.swing.*;
  * drawString画字符串
  * setFont 设置画笔字体
  * setColor 设置画笔颜色
+ * drawArc 画弧形
  * 补充一点fill 和 draw是彼此独立的不是画完就填充，当然可以在填充外边套个边框。
  * Color c = new Color(0,255,255);
  * g.setColor(c);
@@ -63,7 +64,14 @@ class MyPane extends JPanel{
 		Color c = new Color(0,255,255);
 		g.setColor(c);
 		//g.draw3DRect(100, 100, 100, 100, false);//凹进去
-		g.fill3DRect(100, 100, 100, 100, true);//凸出来
+		//g.fill3DRect(100, 100, 100, 100, true);//凸出来
+		
+		//矩形 x y 中心点
+		//矩形宽高
+		//左边走弧度
+		//右边走弧度
+		g.drawArc(200, 100, 190, 100, 100, -200);
+
 		
 	}
 }

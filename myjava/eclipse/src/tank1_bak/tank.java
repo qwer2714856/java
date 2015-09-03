@@ -1,4 +1,4 @@
-package tankv1;
+package tank1_bak;
 import java.awt.*;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
@@ -48,13 +48,12 @@ class TankPanel extends JPanel implements KeyListener{
 	}
 	
 	public void paint(Graphics g){
-		//第一次调用的时候创建两个坦克，然后每次调用repaint的时候是在原对象基础上跑
 		super.paint(g);
 		//设置JPanel的活动区域
 		g.setColor(Color.gray);
 		g.fillRect(0, 0, 400, 300);
 		//开始画自己坦克图片
-		this.createTank(this.myTank.getX(), this.myTank.getY(), g, this.myTank.getDir(), 0);
+		this.createTank(this.myTank.getX(), this.myTank.getY(), g, 2, 0);
 		//敌人坦克
 		this.createTank(this.badTank.getX(), this.badTank.getY(), g, 0, 1);
 		
@@ -143,38 +142,7 @@ class TankPanel extends JPanel implements KeyListener{
 	@Override
 	public void keyPressed(KeyEvent e) {
 		// TODO Auto-generated method stub
-		int maxHeight = this.getHeight();
-		int maxWidth = this.getWidth();
-		int x = this.myTank.getX();
-		int y = this.myTank.getY();
-		int speed = this.myTank.getSpeed();
-		int dir = -1;
-		//set tank position
-		switch(e.getKeyCode()){
-		case KeyEvent.VK_UP:
-			dir = 1;
-			if(y > 0){y -= speed;}
-			;break;
-		case KeyEvent.VK_RIGHT:
-			dir = 2;
-			if(x < maxWidth){x += speed;}
-			;break;
-		case KeyEvent.VK_DOWN:
-			dir = 0;
-			if(y < maxHeight){y += speed;}
-			;break;
-		case KeyEvent.VK_LEFT:
-			dir = 3;
-			if(x > 0){x -= speed;}
-			;break;
-		}
-		//点击的其他按键
-		if(dir!=-1){
-			this.myTank.setDir(dir);
-			this.myTank.setX(x);
-			this.myTank.setY(y);
-			this.repaint();
-		}
+		System.out.println("--");
 	}
 
 	@Override
@@ -191,42 +159,10 @@ class TankPanel extends JPanel implements KeyListener{
  */
 abstract class Tanks{
 	
-	//定义位置
 	private int x = 0;
 	private int y = 0;
-	//定义速度
-	private int speed = 1;
-	//定义方向
-	private int dir = 0;
-	//定义大小的 构建坦克后初始化
-	private int sizeW = 0;
-	private int sizeH = 0;
-	private int sizeCz = 0;
+	private int speed = 0;
 	
-	public int getSizeCz() {
-		return sizeCz;
-	}
-	public void setSizeCz(int sizeCz) {
-		this.sizeCz = sizeCz;
-	}
-	public int getSizeW() {
-		return sizeW;
-	}
-	public void setSizeW(int sizeW) {
-		this.sizeW = sizeW;
-	}
-	public int getSizeH() {
-		return sizeH;
-	}
-	public void setSizeH(int sizeH) {
-		this.sizeH = sizeH;
-	}
-	public int getDir() {
-		return dir;
-	}
-	public void setDir(int dir) {
-		this.dir = dir;
-	}
 	public int getSpeed() {
 		return speed;
 	}
