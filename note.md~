@@ -2002,8 +2002,45 @@ this.lb.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 技术===========
 1.java绘图坐标体系
 java绘图的坐标系的原点是基于弹出窗口的左上脚，而弹出框的是基于屏幕的。
+像素是一个密度单位，厘米是个长度单位两者1法比较。 
 
+//事件的流程
+1.类实现想用的接口，KeyListener MouseListener ActionLister WindowListener
+2.把接口的方法实现，重写好它。
+3.完成这两部这个类就是监听者，方法过程就是处理流程
+4.返回的ActionEvent e 就是一个事件，用e可以得到譬如 getActionCommand(Action) getKeyCode(KeyListener) 等等
+5. 在事件源上注册监听，什么是事件源，就是绑定的那个实例对象，例如 一个按钮，或者主类，被实例 后可以绑定事件例如
+Event_keyword i = new Event_keyword();
+this.addKeyListener(this.m);//this 就是i的实例，this.m就是事件监听者
+当前实例绑定事件监听者this.m,this m 是监听者的实例。
+如果是ActionListener 有可this.setActionCommand("值传递") 事件可以用e.getActionCommand()获取传递的值
+6.事件传递是靠事件对象的例如ActionEvent KeyEvent MouseEvent or WindowEvent
+=====================深入事件==============================================
+1事件源
+事件源是一个产生（或触发）事件的对象，比如前面的JButton的一个对象btml。当这个事件源对象的默写状态以某种方式发生变化时，就会产生某种类型的事件（<<一个事件源可能会发生多个不同类型的事件>>）如果某个组件（对象）希望得到事件源产生的事件，就需要在这个事件源上注册。一个事件源可以注册不同事件，例如j.addKeyListener j.addActionListener.等等只要你想可以绑定多个!!!<一个事件源可以被多个事件监听者监听>!!!其实就是同一个事件add多个事件监听者例如 addActionListener(new a()) addActionListener(new b());
+2.事件就是承载 事件源状态改变时的信息对象。java.awt.event javax.swing.event中定义了各种事件类型，常见的事件类有：
+ActionEvent                 通常在按下按钮，或双击一个列表或选中某个菜单系发生
+AdjustmentEvent             当操作一个滚动条发生
+ComponentEvent              当一个组件隐藏，移动，改变大小发生
+ContainerEvent              当一个组件从容器加入或者删除发生
+FocusEvent                  当一个组件获得或失去焦点发生
+ItemEvent                   当一个复选框或是列表项被选中，当一个选择框或选择菜单被选中
+KeyEvent                    键盘
+MouseEvent                  鼠标
+TextEvent                   本区域发生改变,例如聊天
+WindowEvent                 当一个窗口激活，关闭，失效，恢复，最小最大化
 
+3.事件监听器接口例如WindowListener, ActionListener,KeyListener,MouseListener等等
+
+===============================总结
+1.编写事件处理类（事件监听者）
+2.更觉需求给事件处理类实现监听器接口
+3.在事件处理类中重写（实现）其事件处理的函数
+4.在事件源类中指定该事件的监听器（响应者）是谁，即注册监听。
+
+java 采用委托机制处理事件
+在事件源中需要注册事件监听类。否则事件监听类接收不到事件源发生的事件。
+  
 
 eclipse
 java 最后的项目是以工程的形式管理的，不过多大的项目，散列的file是没有意义的。
