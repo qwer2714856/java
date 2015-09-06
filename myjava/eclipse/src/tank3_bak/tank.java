@@ -1,4 +1,4 @@
-package tankv1;
+package tank3_bak;
 import java.awt.*;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
@@ -17,9 +17,6 @@ public class tank extends JFrame{
 	
 	public tank(){
 		this.tp = new TankPanel();
-		//启动刷新线程
-		Thread thread = new Thread(this.tp);
-		thread.start();
 		this.add(tp);
 		this.setTitle("丁陆超PK姜丽丽");
 		this.setSize(400,400);
@@ -37,7 +34,7 @@ public class tank extends JFrame{
  * @author Administrator
  *
  */
-class TankPanel extends JPanel implements KeyListener,Runnable{
+class TankPanel extends JPanel implements KeyListener{
 	
 	/**
 	 * 整个有戏都是生存在这个panel里面
@@ -47,7 +44,6 @@ class TankPanel extends JPanel implements KeyListener,Runnable{
 	//定义坏人坦克,线程机制使用Vector
 	private Vector<BadTanks> badTanksList = new Vector<BadTanks>();
 	//private BadTanks badTank = null;
-	
 	//定义活动范围
 	private int activityW = 400;
 	private int activityH = 300;
@@ -67,10 +63,6 @@ class TankPanel extends JPanel implements KeyListener,Runnable{
 	public void paint(Graphics g){
 		//第一次调用的时候创建两个坦克，然后每次调用repaint的时候是在原对象基础上跑
 		super.paint(g);
-		
-		//其实这个相当于一个动画每次都需要在画布上重新绘制这样看起来就像是动态的，每次重绘原来的就不存在了要重新绘制一次，这样看起来就像是在动。
-		//repaint 相当于在画布上重新绘制图像，原来的都擦掉了。
-		
 		//设置JPanel的活动区域
 		g.setColor(Color.gray);
 		g.fillRect(0, 0, this.activityW, this.activityH);
@@ -81,15 +73,6 @@ class TankPanel extends JPanel implements KeyListener,Runnable{
 			BadTanks bt = this.badTanksList.get(i);
 			this.createTank(bt.getX(), bt.getY(), g, bt.getDir(), bt.getIdentity(), bt, bt.getColor());
 		}
-		
-		//自己的子弹
-		if(this.myTank.bullet != null && this.myTank.bullet.isLive == true){
-			this.createBulleat(this.myTank.bullet.getX(),this.myTank.bullet.getY(), g, this.myTank.bullet.getColor(), this.myTank.bullet.getWidth(), this.myTank.bullet.getHeight());
-		}
-	}
-	private void createBulleat(int x, int y, Graphics g, Color color, int width, int height){
-		g.setColor(color);
-		g.fill3DRect(x, y, width, height, false);
 	}
 	private void createTank(int x, int y, Graphics g, int dir, int type, Tanks tk, Color color){
 		//色彩
@@ -202,13 +185,6 @@ class TankPanel extends JPanel implements KeyListener,Runnable{
 			this.myTank.moveLeft();
 			;break;
 		}
-		
-		if(e.getKeyCode() == KeyEvent.VK_SPACE){
-			//开火
-			this.myTank.fire(this.activityW, this.activityH);
-			dir = 4;
-		}
-		
 		//点击的其他按键
 		if(dir!=-1){
 			this.repaint();
@@ -219,20 +195,5 @@ class TankPanel extends JPanel implements KeyListener,Runnable{
 	public void keyReleased(KeyEvent e) {
 		// TODO Auto-generated method stub
 		
-	}
-
-	@Override
-	//刷新线程
-	public void run() {
-		// TODO Auto-generated method stub
-		while(true){
-			try {
-				Thread.sleep(100);
-			} catch (InterruptedException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-			this.repaint();
-		}
 	}
 }
