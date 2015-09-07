@@ -1,4 +1,4 @@
-package tankv1;
+package tank4_bak;
 import java.awt.*;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
@@ -79,149 +79,14 @@ class TankPanel extends JPanel implements KeyListener,Runnable{
 		//敌人坦克
 		for(int i = 0; i < this.badTanksList.size(); i++){
 			BadTanks bt = this.badTanksList.get(i);
-			if(bt.isLive){
-				this.createTank(bt.getX(), bt.getY(), g, bt.getDir(), bt.getIdentity(), bt, bt.getColor());
-			}else{
-				this.badTanksList.remove(bt);
-			}
+			this.createTank(bt.getX(), bt.getY(), g, bt.getDir(), bt.getIdentity(), bt, bt.getColor());
 		}
 		
 		//自己的子弹
-		for(int i = 0; i < this.myTank.bulletList.size(); i++){
-			Bullet bullet = this.myTank.bulletList.get(i);
-			if(bullet.isLive == true){
-				this.createBulleat(bullet.getX(),bullet.getY(), g, bullet.getColor(), bullet.getWidth(), bullet.getHeight());
-			}else{
-				if(bullet != null){
-					this.myTank.clearBulletList(bullet);	
-				}
-				
-			}
+		if(this.myTank.bullet != null && this.myTank.bullet.isLive == true){
+			this.createBulleat(this.myTank.bullet.getX(),this.myTank.bullet.getY(), g, this.myTank.bullet.getColor(), this.myTank.bullet.getWidth(), this.myTank.bullet.getHeight());
 		}
 	}
-	
-	private void setTankAndBulleatStatus(Bullet b, Tanks tk){
-		//定义方向 1上 2右 0下 3左
-		Boolean isHit = false;
-		int btMaxX = b.getX() + b.getWidth();
-		int btMaxY = b.getY() + b.getHeight();
-		int btMinX = b.getX();
-		int btMinY = b.getY();
-		
-		int tkPTMaxX = 0;
-		int tkPTMaxY = 0;
-		int tkPTMinX = 0;
-		int tkPTMinY = 0;
-		int tkMaxX = 0;
-		int tkMaxY = 0;
-		int tkMinX = 0;
-		int tkMinY = 0;
-		//定义方向 1上 2右 0下 3左
-		switch(tk.dir){
-		case 0:
-			//炮管
-			tkPTMaxX = tk.getX() + 8 + 4;
-			tkPTMinX = tk.getX() + 8;
-			tkPTMaxY = tk.getY() + 5;
-			tkPTMinY = tk.getY();
-			//坦克
-			tkMaxX = tk.getX() + 20;
-			tkMinX = tk.getX();
-			tkMaxY = tk.getY() + 30;
-			tkMinY = tk.getY();
-			if((btMinX < tkPTMaxX && btMinX > tkPTMinX && btMinY < tkPTMaxY && btMinY > tkPTMinY) 
-			|| 
-			(btMaxX < tkPTMaxX && btMaxX > tkPTMinX && btMaxY < tkPTMaxY && btMaxY > tkPTMinY)
-			||
-			(btMinX < tkMaxX && btMinX > tkMinX && btMinY < tkMaxY && btMinY > tkMinY)
-			||
-			(btMaxX < tkMaxX && btMaxX > tkMinX && btMaxY < tkMaxY && btMaxY > tkMinY)
-			){
-				isHit = true;
-			}
-			
-			
-			;break;
-		case 1:
-			
-			//炮管
-			tkPTMaxX = tk.getX() + 8 + 4;
-			tkPTMinX = tk.getX() + 8;
-			tkPTMaxY = tk.getY();
-			tkPTMinY = tk.getY() - 5;
-			//坦克
-			tkMaxX = tk.getX() + 20;
-			tkMinX = tk.getX();
-			tkMaxY = tk.getY() + 30;
-			tkMinY = tk.getY();
-			if((btMinX < tkPTMaxX && btMinX > tkPTMinX && btMinY < tkPTMaxY && btMinY > tkPTMinY) 
-			|| 
-			(btMaxX < tkPTMaxX && btMaxX > tkPTMinX && btMaxY < tkPTMaxY && btMaxY > tkPTMinY)
-			||
-			(btMinX < tkMaxX && btMinX > tkMinX && btMinY < tkMaxY && btMinY > tkMinY)
-			||
-			(btMaxX < tkMaxX && btMaxX > tkMinX && btMaxY < tkMaxY && btMaxY > tkMinY)
-			){
-				isHit = true;
-			}
-			
-			;break;
-		case 2:
-			
-			//炮管
-			tkPTMaxX = tk.getX() + 12 + 5;
-			tkPTMinX = tk.getX() + 12;
-			tkPTMaxY = tk.getY() + 8 + 4;
-			tkPTMinY = tk.getY() + 8;
-			//坦克
-			tkMaxX = tk.getX() + 20;
-			tkMinX = tk.getX();
-			tkMaxY = tk.getY() + 30;
-			tkMinY = tk.getY();
-			if((btMinX < tkPTMaxX && btMinX > tkPTMinX && btMinY < tkPTMaxY && btMinY > tkPTMinY) 
-			|| 
-			(btMaxX < tkPTMaxX && btMaxX > tkPTMinX && btMaxY < tkPTMaxY && btMaxY > tkPTMinY)
-			||
-			(btMinX < tkMaxX && btMinX > tkMinX && btMinY < tkMaxY && btMinY > tkMinY)
-			||
-			(btMaxX < tkMaxX && btMaxX > tkMinX && btMaxY < tkMaxY && btMaxY > tkMinY)
-			){
-				isHit = true;
-			}
-			
-			;break;
-		case 3:
-			
-			//炮管
-			tkPTMaxX = tk.getX() - 5 + 5;
-			tkPTMinX = tk.getX() - 5;
-			tkPTMaxY = tk.getY() + 8 + 4;
-			tkPTMinY = tk.getY() + 8;
-			//坦克
-			tkMaxX = tk.getX() + 20;
-			tkMinX = tk.getX();
-			tkMaxY = tk.getY() + 30;
-			tkMinY = tk.getY();
-			if((btMinX < tkPTMaxX && btMinX > tkPTMinX && btMinY < tkPTMaxY && btMinY > tkPTMinY) 
-			|| 
-			(btMaxX < tkPTMaxX && btMaxX > tkPTMinX && btMaxY < tkPTMaxY && btMaxY > tkPTMinY)
-			||
-			(btMinX < tkMaxX && btMinX > tkMinX && btMinY < tkMaxY && btMinY > tkMinY)
-			||
-			(btMaxX < tkMaxX && btMaxX > tkMinX && btMaxY < tkMaxY && btMaxY > tkMinY)
-			){
-				isHit = true;
-			}
-			
-			;break;
-		}
-		
-		if(isHit){
-			tk.isLive = false;
-			b.isLive = false;
-		}
-	}
-	
 	private void createBulleat(int x, int y, Graphics g, Color color, int width, int height){
 		g.setColor(color);
 		g.fill3DRect(x, y, width, height, false);
@@ -251,7 +116,7 @@ class TankPanel extends JPanel implements KeyListener,Runnable{
 									
 			//爆筒子
 			g.fillRect(x+8, y+12, 4, 23);
-			;break;//下
+			;break;//上
 		case 1:
 			//左边轮子
 			g.setColor(color);
@@ -266,7 +131,7 @@ class TankPanel extends JPanel implements KeyListener,Runnable{
 									
 			//爆筒子
 			g.fillRect(x+8, y-5, 4, 23);
-			;break;//上
+			;break;//右
 		case 2:
 			//左边轮子
 			g.setColor(color);
@@ -281,7 +146,7 @@ class TankPanel extends JPanel implements KeyListener,Runnable{
 									
 			//爆筒子
 			g.fillRect(x+12, y+8, 23, 4);
-			;break;//右
+			;break;//下
 		case 3:
 			//左边轮子
 			g.setColor(color);
@@ -338,7 +203,7 @@ class TankPanel extends JPanel implements KeyListener,Runnable{
 			;break;
 		}
 		
-		if(e.getKeyCode() == KeyEvent.VK_SPACE && this.myTank.bulletList.size() < this.myTank.getBulletNum()){
+		if(e.getKeyCode() == KeyEvent.VK_SPACE){
 			//开火
 			this.myTank.fire(this.activityW, this.activityH);
 			dir = 4;
@@ -349,16 +214,7 @@ class TankPanel extends JPanel implements KeyListener,Runnable{
 			this.repaint();
 		}
 	}
-	//好人打坏人
-	private void setIsLive(Vector<Bullet> b, Vector<BadTanks> tk){	
-		int len = b.size();
-		int badTkLen = tk.size();
-		for(int i = 0; i < len; i++){
-			for(int j = 0; j < badTkLen; j++){
-				this.setTankAndBulleatStatus(b.get(i), tk.get(j));
-			}
-		}		
-	}
+
 	@Override
 	public void keyReleased(KeyEvent e) {
 		// TODO Auto-generated method stub
@@ -371,16 +227,11 @@ class TankPanel extends JPanel implements KeyListener,Runnable{
 		// TODO Auto-generated method stub
 		while(true){
 			try {
-				Thread.sleep(5);
+				Thread.sleep(100);
 			} catch (InterruptedException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
-			
-			//好人打坏人的子弹和坦克状态
-			this.setIsLive(this.myTank.bulletList, this.badTanksList);
-			
-			
 			this.repaint();
 		}
 	}

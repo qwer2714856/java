@@ -1,6 +1,5 @@
-package tankv1;
+package tank4_bak;
 import java.awt.*;
-import java.util.*;
 /**
  * 抽象类坦克
  * @author Administrator
@@ -22,29 +21,15 @@ abstract class Tanks{
 	int identity = 0;
 	//颜色
 	Color color = null;
-	//是否活着
-	Boolean isLive = true;
 	//子弹
-	//限制一次可以发多少子弹
-	private int bulletNum = 5;
-	//Bullet bullet = null;
-	Vector<Bullet> bulletList = new Vector<Bullet>();
-	//clear BulletList
-	public void clearBulletList(Bullet bullet){
-		this.bulletList.remove(bullet);
+	Bullet bullet = null;
+	
+	public Bullet getBullet() {
+		return bullet;
 	}
-	public int getBulletNum() {
-		return bulletNum;
+	public void setBullet(Bullet bullet) {
+		this.bullet = bullet;
 	}
-	public Boolean getIsLive() {
-		return isLive;
-	}
-	public void setIsLive(Boolean isLive) {
-		this.isLive = isLive;
-	}
-	public void setBulletNum(int bulletNum) {
-		this.bulletNum = bulletNum;
-	} 
 	public Color getColor() {
 		return color;
 	}
@@ -154,32 +139,31 @@ class GoodTanks extends Tanks{
 		this.setColor(Color.yellow);	
 	}	
 	public void fire(int borderX, int borderY){
-			int x = 0;
-			int y = 0;
-			//定义方向 1上 2右 0下 3左
-			switch(this.dir){
-			case 0:
-				x = this.x + 7;
-				y = this.y + 36;
-				;break;
-			case 1:
-				x = this.x + 7;
-				y = this.y - 11;
-				;break;
-			case 2:
-				x = this.x + 36;
-				y = this.y + 7;
-				;break;
-			case 3:
-				x = this.x -11;
-				y = this.y + 8;
-				;break;
-			}
-			//启动子弹线程
-			Bullet s = new Bullet(x, y, this.dir, borderX, borderY);
-			this.bulletList.add(s);
-			Thread thread = new Thread(s);
-			thread.start();
+		int x = 0;
+		int y = 0;
+		//定义方向 1上 2右 0下 3左
+		switch(this.dir){
+		case 0:
+			x = this.x + 7;
+			y = this.y + 36;
+			;break;
+		case 1:
+			x = this.x + 7;
+			y = this.y - 11;
+			;break;
+		case 2:
+			x = this.x + 36;
+			y = this.y + 7;
+			;break;
+		case 3:
+			x = this.x -11;
+			y = this.y + 8;
+			;break;
+		}
+		//启动子弹线程
+		this.bullet = new Bullet(x, y, this.dir, borderX, borderY);
+		Thread thread = new Thread(this.bullet);
+		thread.start();
 	}
 }
 /**
@@ -203,7 +187,7 @@ class BadTanks extends Tanks{
 */
 class Bullet implements Runnable{
 	Color color = null;
-	int speed = 2;
+	int speed = 10;
 	int x = 0;
 	int y = 0;
 	int dir = 0;
@@ -330,12 +314,11 @@ class Bullet implements Runnable{
 			//子弹何时死亡
 			if(x == minX || x == maxX || y == minY || y == maxY){
 				this.isLive = false;
-				
 				break;
 			}
 			
 			try {
-				Thread.sleep(10);
+				Thread.sleep(100);
 			} catch (InterruptedException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
