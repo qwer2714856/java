@@ -1,4 +1,4 @@
-package tankv1;
+package tank5_bak;
 import java.awt.*;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
@@ -48,13 +48,6 @@ class TankPanel extends JPanel implements KeyListener,Runnable{
 	private Vector<BadTanks> badTanksList = new Vector<BadTanks>();
 	//private BadTanks badTank = null;
 	
-	//定义爆炸的图片
-	private Image image1 = null;
-	private Image image2 = null;
-	private Image image3 = null;
-	//定义炸弹的向量
-	Vector<Bomb> bombList = new Vector<Bomb>();
-	
 	//定义活动范围
 	private int activityW = 400;
 	private int activityH = 300;
@@ -69,11 +62,6 @@ class TankPanel extends JPanel implements KeyListener,Runnable{
 		for(int i = 0; i < this.numBadTank; i++){
 			this.badTanksList.add(new BadTanks((i+1)*60,0));
 		}
-		
-		//初始化爆炸图片--三张图片组合为一个炮炸效果
-		this.image1 = Toolkit.getDefaultToolkit().getImage(Panel.class.getResource("/tp/bz.png"));
-		this.image2 = Toolkit.getDefaultToolkit().getImage(Panel.class.getResource("/tp/bz2.png"));
-		this.image3 = Toolkit.getDefaultToolkit().getImage(Panel.class.getResource("/tp/bz3.png"));
 	}
 	
 	public void paint(Graphics g){
@@ -86,19 +74,6 @@ class TankPanel extends JPanel implements KeyListener,Runnable{
 		//设置JPanel的活动区域
 		g.setColor(Color.gray);
 		g.fillRect(0, 0, this.activityW, this.activityH);
-		
-		//开始绘制爆炸的图像
-		for(int i = 0; i < this.bombList.size(); i++){
-			Bomb b = this.bombList.get(i);
-			if(b.getIsLive()){
-				this.bombPlay(b, g);
-			}else{
-				//从队列删除
-				this.bombList.remove(b);
-			}
-		}
-		
-		
 		//开始画自己坦克图片
 		this.createTank(this.myTank.getX(), this.myTank.getY(), g, this.myTank.getDir(), this.myTank.getIdentity(), this.myTank, this.myTank.getColor());
 		//敌人坦克
@@ -107,7 +82,6 @@ class TankPanel extends JPanel implements KeyListener,Runnable{
 			if(bt.isLive){
 				this.createTank(bt.getX(), bt.getY(), g, bt.getDir(), bt.getIdentity(), bt, bt.getColor());
 			}else{
-				//炸弹爆炸 
 				this.badTanksList.remove(bt);
 			}
 		}
@@ -125,20 +99,7 @@ class TankPanel extends JPanel implements KeyListener,Runnable{
 			}
 		}
 	}
-	private void bombPlay(Bomb b, Graphics g){
-		int bs = (int)Math.ceil((double)b.getLife() / 3);
-		switch(bs){
-		case 3:
-			g.drawImage(this.image1, b.getX(), b.getY(), 30, 30, this);
-			break;
-		case 2:
-			g.drawImage(this.image2, b.getX(), b.getY(), 30, 30, this);
-			break;
-		case 1:
-			g.drawImage(this.image3, b.getX(), b.getY(), 30, 30, this);
-			break;
-		}		 
-	}
+	
 	private void setTankAndBulleatStatus(Bullet b, Tanks tk){
 		//定义方向 1上 2右 0下 3左
 		Boolean isHit = false;
@@ -258,11 +219,6 @@ class TankPanel extends JPanel implements KeyListener,Runnable{
 		if(isHit){
 			tk.isLive = false;
 			b.isLive = false;
-			//如果击中了坦克就创建一个炸弹。
-			Bomb bob = new Bomb(tk.getX(),tk.getY());
-			Thread thread = new Thread(bob);
-			thread.start();
-			this.bombList.add(bob);
 		}
 	}
 	

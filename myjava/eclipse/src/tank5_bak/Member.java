@@ -1,4 +1,4 @@
-package tankv1;
+package tank5_bak;
 import java.awt.*;
 import java.util.*;
 /**
@@ -343,68 +343,4 @@ class Bullet implements Runnable{
 
 		}
 	}
-}
-
-class Bomb implements Runnable{	
- private int x = 0;
- private int y = 0;
- //炸弹的生命
- private int life = 9;
- private Boolean isLive = true;
- public Bomb(int x, int y){
-	 this.x = x;
-	 this.y = y;
- }
-
- public int getX() {
-	return x;
-	}
-	public void setX(int x) {
-		this.x = x;
-	}
-	public int getY() {
-		return y;
-	}
-	public void setY(int y) {
-		this.y = y;
-	}
-	public int getLife() {
-		return life;
-	}
-	public void setLife(int life) {
-		this.life = life;
-	}
-	public Boolean getIsLive() {
-		return isLive;
-	}
-	public void setIsLive(Boolean isLive) {
-		this.isLive = isLive;
-	}
- 
- //减少生命
- public void LifeDown(){
-	 if(this.life > 0){
-		 this.life --;
-	 }else{
-		 this.isLive = false;
-	 }
- }
-
-@Override
-public void run() {
-	// TODO Auto-generated method stub
-	while(true){
-		if(this.isLive){
-			this.LifeDown();
-		}else{
-			break;
-		}
-		try {
-			Thread.sleep(20);
-		} catch (InterruptedException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-	}
-}
 }
