@@ -87,18 +87,6 @@ class TankPanel extends JPanel implements KeyListener,Runnable{
 		g.setColor(Color.gray);
 		g.fillRect(0, 0, this.activityW, this.activityH);
 		
-		//开始绘制爆炸的图像
-		for(int i = 0; i < this.bombList.size(); i++){
-			Bomb b = this.bombList.get(i);
-			if(b.getIsLive()){
-				this.bombPlay(b, g);
-			}else{
-				//从队列删除
-				this.bombList.remove(b);
-			}
-		}
-		
-		
 		//开始画自己坦克图片
 		this.createTank(this.myTank.getX(), this.myTank.getY(), g, this.myTank.getDir(), this.myTank.getIdentity(), this.myTank, this.myTank.getColor());
 		//敌人坦克
@@ -123,6 +111,17 @@ class TankPanel extends JPanel implements KeyListener,Runnable{
 				
 			}
 		}
+		
+		//开始绘制爆炸的图像
+				for(int i = 0; i < this.bombList.size(); i++){
+					Bomb b = this.bombList.get(i);
+					if(b.getIsLive()){
+						this.bombPlay(b, g);
+					}else{
+						//从队列删除
+						this.bombList.remove(b);
+					}
+				}
 	}
 	private void bombPlay(Bomb b, Graphics g){
 		int bs = (int)Math.ceil((double)b.getLife() / 3);
