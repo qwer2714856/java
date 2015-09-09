@@ -1,4 +1,4 @@
-package tankv1;
+package tank6_bak;
 import java.awt.*;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
@@ -67,13 +67,7 @@ class TankPanel extends JPanel implements KeyListener,Runnable{
 		//this.badTank = new BadTanks(200,200); 
 		//初始话敌人的坦克
 		for(int i = 0; i < this.numBadTank; i++){
-			BadTanks badTank = new BadTanks((i+1)*60,0);
-			this.badTanksList.add(badTank);
-			Thread thread = new Thread(badTank);
-			thread.start();
-
-			//给敌人加上武器子弹
-			badTank.fire(this.activityW, this.activityH);
+			this.badTanksList.add(new BadTanks((i+1)*60,0));
 		}
 		
 		//初始化爆炸图片--三张图片组合为一个炮炸效果
@@ -94,29 +88,12 @@ class TankPanel extends JPanel implements KeyListener,Runnable{
 		g.fillRect(0, 0, this.activityW, this.activityH);
 		
 		//开始画自己坦克图片
-		if(this.myTank.isLive){
-			this.createTank(this.myTank.getX(), this.myTank.getY(), g, this.myTank.getDir(), this.myTank.getIdentity(), this.myTank, this.myTank.getColor());
-		}else{
-			g.setColor(Color.BLACK);
-			g.fillRect(0, 0, this.activityW, this.activityH);
-			g.setColor(Color.RED);
-			g.drawString("Game over", 150, 140);
-			return ;
-		}
+		this.createTank(this.myTank.getX(), this.myTank.getY(), g, this.myTank.getDir(), this.myTank.getIdentity(), this.myTank, this.myTank.getColor());
 		//敌人坦克
 		for(int i = 0; i < this.badTanksList.size(); i++){
 			BadTanks bt = this.badTanksList.get(i);
 			if(bt.isLive){
 				this.createTank(bt.getX(), bt.getY(), g, bt.getDir(), bt.getIdentity(), bt, bt.getColor());
-				//绘制敌人坦克
-				for(int j = 0; j < bt.bulletList.size(); j++){
-					Bullet bullet = bt.bulletList.get(j);
-					if(bullet.isLive){
-						this.createBulleat(bullet.getX(),bullet.getY(), g, bullet.getColor(), bullet.getWidth(), bullet.getHeight());
-					}else{
-						bt.bulletList.remove(bullet);
-					}
-				}
 			}else{
 				this.badTanksList.remove(bt);
 			}
@@ -134,8 +111,6 @@ class TankPanel extends JPanel implements KeyListener,Runnable{
 				
 			}
 		}
-		
-		 
 		
 		//开始绘制爆炸的图像
 				for(int i = 0; i < this.bombList.size(); i++){
@@ -279,14 +254,7 @@ class TankPanel extends JPanel implements KeyListener,Runnable{
 		}
 		
 		if(isHit){
-			//算血量如果血量够就减去血不死
-			int life = tk.getLife();
-			if(life < 1){
-				tk.isLive = false;
-			}else{
-				tk.setLife(--life);
-			}
-			
+			tk.isLive = false;
 			b.isLive = false;
 			//如果击中了坦克就创建一个炸弹。
 			Bomb bob = new Bomb(tk.getX(),tk.getY());
@@ -433,18 +401,6 @@ class TankPanel extends JPanel implements KeyListener,Runnable{
 			}
 		}		
 	}
-	
-	//坏人打好人
-	private void badKillGood(Vector<BadTanks> badList, GoodTanks tk){	
-	    for(int i = 0; i < badList.size(); i++){
-	    	BadTanks badTk = badList.get(i);
-	    	for(int j = 0; j < badTk.bulletList.size(); j++){
-	    		 this.setTankAndBulleatStatus(badTk.bulletList.get(j), tk);
-	    	}
-	    }
-	}
-	
-	
 	@Override
 	public void keyReleased(KeyEvent e) {
 		// TODO Auto-generated method stub
@@ -465,8 +421,6 @@ class TankPanel extends JPanel implements KeyListener,Runnable{
 			
 			//好人打坏人的子弹和坦克状态
 			this.setIsLive(this.myTank.bulletList, this.badTanksList);
-			//坏人干掉好人
-			this.badKillGood(this.badTanksList, this.myTank);
 			
 			
 			this.repaint();

@@ -1,4 +1,4 @@
-package tankv1;
+package tank6_bak;
 import java.awt.*;
 import java.util.*;
 /**
@@ -7,8 +7,7 @@ import java.util.*;
  *
  */
 abstract class Tanks{
-	//定义血
-	int life = 9;
+	
 	//定义位置
 	int x = 0;
 	int y = 0;
@@ -36,12 +35,6 @@ abstract class Tanks{
 	}
 	public int getBulletNum() {
 		return bulletNum;
-	}
-	public int getLife() {
-		return life;
-	}
-	public void setLife(int life) {
-		this.life = life;
 	}
 	public Boolean getIsLive() {
 		return isLive;
@@ -146,34 +139,7 @@ abstract class Tanks{
 		dir = 3;
 	}
 	//开火
-	public void fire(int borderX, int borderY){
-		int x = 0;
-		int y = 0;
-		//定义方向 1上 2右 0下 3左
-		switch(this.dir){
-		case 0:
-			x = this.x + 7;
-			y = this.y + 36;
-			;break;
-		case 1:
-			x = this.x + 7;
-			y = this.y - 11;
-			;break;
-		case 2:
-			x = this.x + 36;
-			y = this.y + 7;
-			;break;
-		case 3:
-			x = this.x -11;
-			y = this.y + 8;
-			;break;
-		}
-		//启动子弹线程
-		Bullet s = new Bullet(x, y, this.dir, borderX, borderY);
-		this.bulletList.add(s);
-		Thread thread = new Thread(s);
-		thread.start();
-	}
+	abstract public void fire(int borderX, int borderY);
 }
 /**
  * 好坦克
@@ -187,63 +153,48 @@ class GoodTanks extends Tanks{
 		this.setDir(1);
 		this.setColor(Color.yellow);	
 	}	
+	public void fire(int borderX, int borderY){
+			int x = 0;
+			int y = 0;
+			//定义方向 1上 2右 0下 3左
+			switch(this.dir){
+			case 0:
+				x = this.x + 7;
+				y = this.y + 36;
+				;break;
+			case 1:
+				x = this.x + 7;
+				y = this.y - 11;
+				;break;
+			case 2:
+				x = this.x + 36;
+				y = this.y + 7;
+				;break;
+			case 3:
+				x = this.x -11;
+				y = this.y + 8;
+				;break;
+			}
+			//启动子弹线程
+			Bullet s = new Bullet(x, y, this.dir, borderX, borderY);
+			this.bulletList.add(s);
+			Thread thread = new Thread(s);
+			thread.start();
+	}
 }
 /**
  * 坏坦克
  * @author Administrator
  *
  */
-class BadTanks extends Tanks implements Runnable{
+class BadTanks extends Tanks{
 	public BadTanks(int x, int y){
 		super(x, y);
 		this.setIdentity(1);
 		this.setColor(Color.red);
-		this.setSpeed(1);
-		this.setLife(1);
 	}
-	
-	@Override
-	//坦克的线程
-	public void run() {
-		// TODO Auto-generated method stub
-		while(true){
-			
-			for(int i = 0; i < 10; i++){
-				//定义方向 1上 2右 0下 3左
-				switch(this.dir){
-				case 0:
-					this.moveDown(300);
-					break;
-				case 1:
-					this.moveTop();
-					break;
-				case 2:
-					this.moveRight(400);
-					break;
-				case 3:
-					this.moveLeft();
-					break;
-				}
-				try {
-					Thread.sleep(50);
-				} catch (InterruptedException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-			}
-			
-			//动态修改随机的方向
-			this.dir = (int)(Math.random() * 4);
-			if(!this.isLive){
-				break;
-			}
-			
-			//子弹死亡了就在发一颗子弹出来
-			if(this.bulletList.size() < this.getBulletNum()){
-				this.fire(400, 300);
-			}
-			
-		}
+	public void fire(int borderX, int borderY){
+		
 	}
 }
 /**
