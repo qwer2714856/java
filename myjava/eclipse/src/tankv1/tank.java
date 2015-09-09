@@ -107,7 +107,6 @@ class TankPanel extends JPanel implements KeyListener,Runnable{
 			if(bt.isLive){
 				this.createTank(bt.getX(), bt.getY(), g, bt.getDir(), bt.getIdentity(), bt, bt.getColor());
 			}else{
-				//Õ¨µ¯±¬Õ¨ 
 				this.badTanksList.remove(bt);
 			}
 		}
