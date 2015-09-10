@@ -238,7 +238,7 @@ class BadTanks extends Tanks implements Runnable{
 				break;
 			}
 			
-			//子弹死亡了就在发一颗子弹出来
+			//子弹达到一定量就不发了
 			if(this.bulletList.size() < this.getBulletNum()){
 				this.fire(400, 300);
 			}
