@@ -3,7 +3,9 @@ import java.awt.*;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.util.*;
+import java.io.*;
 
+import javax.imageio.ImageIO;
 import javax.swing.*;
 public class tank extends JFrame{
 	public TankPanel tp = null;
@@ -77,9 +79,18 @@ class TankPanel extends JPanel implements KeyListener,Runnable{
 		}
 		
 		//初始化爆炸图片--三张图片组合为一个炮炸效果
-		this.image1 = Toolkit.getDefaultToolkit().getImage(Panel.class.getResource("/tp/bz.png"));
+		/*this.image1 = Toolkit.getDefaultToolkit().getImage(Panel.class.getResource("/tp/bz.png"));
 		this.image2 = Toolkit.getDefaultToolkit().getImage(Panel.class.getResource("/tp/bz2.png"));
-		this.image3 = Toolkit.getDefaultToolkit().getImage(Panel.class.getResource("/tp/bz3.png"));
+		this.image3 = Toolkit.getDefaultToolkit().getImage(Panel.class.getResource("/tp/bz3.png"));*/
+		try{
+			//相对于test这层目录
+			//先把图片调到内存里面里面来否则第一次会有问题，当然我用线程已然解决了这个问题。但是这也是个思路
+			this.image1 = ImageIO.read(new File("tp\\bz.png"));
+			this.image2 = ImageIO.read(new File("tp\\bz2.png"));
+			this.image3 = ImageIO.read(new File("tp\\bz3.png"));
+		}catch(Exception e){
+			e.printStackTrace();
+		}
 	}
 	
 	public void paint(Graphics g){

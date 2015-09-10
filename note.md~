@@ -2246,16 +2246,6 @@ linux是fileSystem
                             =
 =============================
 
-fd = new FileReader(fromPath);
-fw = new FileWriter(toPath, true);
-//一次读十个
-char []c = new char[10];
-int n = 0;
-while((n = fd.read(c)) != -1){
-    fw.write(c);
-}
-这里有个问题要注意下，如果char读取的很大如果file本身很小就会使用其它字符不缺所以这个定义也挺重要的。
-
 
 eclipse
 java 最后的项目是以工程的形式管理的，不过多大的项目，散列的file是没有意义的。
