@@ -22,12 +22,15 @@ public class Liu_zifu {
 		
 		try {
 			fd = new FileReader(fromPath);
-			fw = new FileWriter(toPath);
+			fw = new FileWriter(toPath,true);
 			//一次读十个--这里有个问题如果这里定义的很大而文件很小就会出现读取的内容有其它字符补缺。
-			char []c = new char[10];
+			char []c = new char[1];
 			int n = 0;
 			while((n = fd.read(c)) != -1){
-				fw.write(c);
+				//fw.write(c);
+				//去除乱码的
+				//使用这个可以去除多余的读出
+				fw.write(c, 0, n);
 			}
 			
 		} catch (FileNotFoundException e) {
