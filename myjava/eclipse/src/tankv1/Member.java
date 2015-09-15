@@ -417,9 +417,12 @@ class BadTanks extends Tanks implements Runnable{
 	@Override
 	//坦克的线程
 	public void run() {
-		this.isTouchOtherBadTank();
+		int count = 50;
+		int flg = count;
+		int flg2 = count;
 		// TODO Auto-generated method stub
 		while(true){
+			
 			for(int i = 0; i < 10; i++){
 				//定义方向 1上 2右 0下 3左
 				if(!this.isTouchOtherBadTank()){
@@ -454,10 +457,56 @@ class BadTanks extends Tanks implements Runnable{
 			
 			//动态修改随机的方向
 			double rmd = Math.random();
-			if(rmd >= 0.7 && rmd <= 0.8){
-				rmd = 0;
+			if(--flg > (int)count/2){
+				if(rmd >= 0.5 && rmd <= 0.55 || rmd >= 0.80 && rmd <= 0.85){
+					rmd = 0;
+				}
+			}else{
+				if(rmd >= 0.5 && rmd <= 0.55 || rmd >= 0.80 && rmd <= 0.85){
+					rmd = 0.3;
+				}
+				
 			}
-			this.dir = (int)(Math.random() * 4);
+			
+			if(--flg2 > (int)count/2){
+				if(rmd >= 0.56 && rmd <= 0.66 || rmd >= 0.86 && rmd <= 0.96){
+					rmd = 0.55;
+				}
+			}else{
+				if(rmd >= 0.56 && rmd <= 0.66 || rmd >= 0.86 && rmd <= 0.96){
+					rmd = 0.9;
+				}
+			}
+			//System.out.println(flg2);
+			
+			
+			if(flg <= 0){
+				flg = count;
+			}
+			if(flg2 <= 0){
+				flg2 = count;
+			}
+			
+			//System.out.println(flg);
+			this.dir = (int)(rmd * 4);
+			
+			 if(this.isTouchOtherBadTank()){
+				 switch(this.dir){
+					case 0:
+						this.dir = 3;
+						break;
+					case 1:
+						this.dir = 2;
+						break;
+					case 2:
+						this.dir = 1;
+						break;
+					case 3:
+						this.dir = 0;
+						break;
+					}
+			 }
+			
 			if(!this.isLive){
 				break;
 			}
