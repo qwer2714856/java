@@ -194,6 +194,8 @@ class GoodTanks extends Tanks{
  *
  */
 class BadTanks extends Tanks implements Runnable{
+	public static Vector<BadTanks> badTankList = new Vector<BadTanks>();
+	
 	public BadTanks(int x, int y){
 		super(x, y);
 		this.setIdentity(1);
@@ -201,27 +203,243 @@ class BadTanks extends Tanks implements Runnable{
 		this.setSpeed(1);
 		this.setLife(1);
 	}
-	
+	public boolean isTouchOtherBadTank(){
+		Boolean b = false;
+		//过去本对象的边界和方向
+		int x = this.getX();
+		int y = this.getY();
+		int dir = this.getDir();
+		int pLx = 0;
+		int pLy = 0;
+		int pRx = 0;
+		int pRy = 0;
+		int inLx = 0;
+		int inLy = 0;
+		int inRx = 0;
+		int inRy = 0;
+		//定义方向 1上 2右 0下 3左
+		switch(dir){
+		case 1:
+			//获取炮头的横截面
+			pLx = x;
+			pLy = y - 5;
+			pRx = x + 5 + 10 + 5;
+			pRy = y - 5;
+			
+			for(int i = 0; i < this.badTankList.size(); i++){
+				BadTanks otherBadTank = this.badTankList.get(i);
+				if(otherBadTank != this){
+					switch(otherBadTank.getDir()){
+					 case 1:
+						 inLx = otherBadTank.getX();
+						 inLy = otherBadTank.getY() + 30;
+						 inRx = otherBadTank.getX() + 5 + 10 + 5;
+						 inRy = otherBadTank.getY() + 30;
+						 break;
+					 case 2:
+						 inLx = otherBadTank.getX();
+						 inLy = otherBadTank.getY() + 5 + 10 + 5;
+						 inRx = otherBadTank.getX() + 12 + 23;
+						 inRy = otherBadTank.getY() + 5 + 10 + 5;
+						 break;
+					 case 0:
+						 inLx = otherBadTank.getX();
+						 inLy = otherBadTank.getY() + 12 + 23;
+						 inRx = otherBadTank.getX() + 5 + 10 + 5;
+						 inRy = otherBadTank.getY() + 12 + 23;
+						 break;
+					 case 3:
+						 inLx = otherBadTank.getX() - 5;
+						 inLy = otherBadTank.getY() + 5 + 10 + 5;
+						 inRx = otherBadTank.getX() + 30;
+						 inRy = otherBadTank.getY() + 5 + 10 + 5;
+						 break;
+					 }
+					if((pLx >= inLx && pLx <= inRx && pRy - this.speed <= inRy) || 
+					   (pRx <= inRx && pRx >= inLx && pRy - this.speed <= inRy)
+					){
+					    b = true;
+					}
+				}
+			}
+			
+			
+			
+			break;
+		case 2:
+			//获取炮头的横截面
+			pLx = x + 12 + 23;
+			pLy = y;
+			pRx = x + 23 + 12;
+			pRy = y + 5 + 10 + 5;
+			
+			for(int i = 0; i < this.badTankList.size(); i++){
+				BadTanks otherBadTank = this.badTankList.get(i);
+				if(otherBadTank != this){
+					switch(otherBadTank.getDir()){
+					case 1:
+						 inLx = otherBadTank.getX();
+						 inLy = otherBadTank.getY() - 5;
+						 inRx = otherBadTank.getX();
+						 inRy = otherBadTank.getY() + 30;
+						 break;
+					 case 2:
+						 inLx = otherBadTank.getX();
+						 inLy = otherBadTank.getY();
+						 inRx = otherBadTank.getX();
+						 inRy = otherBadTank.getY() + 5 + 10 + 5;
+						 break;
+					 case 0:
+						 inLx = otherBadTank.getX();
+						 inLy = otherBadTank.getY();
+						 inRx = otherBadTank.getX();
+						 inRy = otherBadTank.getY() + 12 + 23;
+						 break;
+					 case 3:
+						 inLx = otherBadTank.getX() - 5;
+						 inLy = otherBadTank.getY();
+						 inRx = otherBadTank.getX() - 5;
+						 inRy = otherBadTank.getY() + 5 + 10 + 5;
+						 break;
+					 }
+					if(pLy >= inLy && pLy <= inRy && (pRx + this.speed >= inRx) || 
+					   pRy >= inLy && pRy <= inRy && (pRx + this.speed >= inRx)
+					 ){
+					    b = true;  
+					    break;
+							
+					}
+				}
+				
+			}
+			
+			
+			break;
+		case 0:
+			//获取炮头的横截面
+			pLx = x;
+			pLy = y + 12 + 23;
+			pRx = x + 5 + 10 + 5;
+			pRy = y + 12 + 23;
+			
+			for(int i = 0; i < this.badTankList.size(); i++){
+				BadTanks otherBadTank = this.badTankList.get(i);
+				if(otherBadTank != this){
+					switch(otherBadTank.getDir()){
+					case 1:
+						 inLx = otherBadTank.getX();
+						 inLy = otherBadTank.getY() - 5;
+						 inRx = otherBadTank.getX() + 5 + 10 + 5;
+						 inRy = otherBadTank.getY() - 5;
+						 break;
+					 case 2:
+						 inLx = otherBadTank.getX();
+						 inLy = otherBadTank.getY();
+						 inRx = otherBadTank.getX() + 12 + 23;
+						 inRy = otherBadTank.getY();
+						 break;
+					 case 0:
+						 inLx = otherBadTank.getX();
+						 inLy = otherBadTank.getY();
+						 inRx = otherBadTank.getX() + 5 + 10 + 5;
+						 inRy = otherBadTank.getY();
+						 break;
+					 case 3:
+						 inLx = otherBadTank.getX() - 5;
+						 inLy = otherBadTank.getY();
+						 inRx = otherBadTank.getX() + 30;
+						 inRy = otherBadTank.getY();
+						 break;
+					 }
+				
+				if((pLx >= inLx && pLx <= inRx && pRy + this.speed >= inRy) || 
+				   (pRx <= inRx && pRx >= inLx && pRy + this.speed >= inRy)
+				){
+				    b = true;
+				}
+				}
+			}
+			
+			break;
+		case 3:
+			//获取炮头的横截面
+			pLx = x - 5;
+			pLy = y;
+			pRx = x - 5;
+			pRy = y + 5 + 10 + 5;
+			
+			for(int i = 0; i < this.badTankList.size(); i++){
+				BadTanks otherBadTank = this.badTankList.get(i);
+				if(otherBadTank != this){
+					switch(otherBadTank.getDir()){
+					case 1:
+						 inLx = otherBadTank.getX() + 5 + 10 + 5;
+						 inLy = otherBadTank.getY() - 5;
+						 inRx = otherBadTank.getX() + 5 + 10 + 5;
+						 inRy = otherBadTank.getY() + 30;
+						 break;
+					 case 2:
+						 inLx = otherBadTank.getX() + 12 + 23;
+						 inLy = otherBadTank.getY();
+						 inRx = otherBadTank.getX() + 12 + 23;
+						 inRy = otherBadTank.getY() + 5 + 10 + 5;
+						 break;
+					 case 0:
+						 inLx = otherBadTank.getX() + 5 + 10 + 5;
+						 inLy = otherBadTank.getY();
+						 inRx = otherBadTank.getX() + 5 + 10 + 5;
+						 inRy = otherBadTank.getY() + 12 + 23;
+						 break;
+					 case 3:
+						 inLx = otherBadTank.getX() + 30;
+						 inLy = otherBadTank.getY();
+						 inRx = otherBadTank.getX() + 30;
+						 inRy = otherBadTank.getY() + 5 + 10 + 5;
+						 break;
+					 }
+				
+				if((pLy >= inLy && pLy <= inRy && pRx - this.speed <= inRx) || 
+				   (pRy <= inRy && pRy >= inLy && pRx - this.speed <= inRx)
+				){
+				   b = true;
+				}
+				}
+			}
+			
+			break;
+		}
+		
+		
+		
+		
+		return b;
+	}
 	@Override
 	//坦克的线程
 	public void run() {
+		this.isTouchOtherBadTank();
 		// TODO Auto-generated method stub
 		while(true){
-			
 			for(int i = 0; i < 10; i++){
 				//定义方向 1上 2右 0下 3左
-				switch(this.dir){
-				case 0:
-					this.moveDown(300);
-					break;
-				case 1:
-					this.moveTop();
-					break;
-				case 2:
-					this.moveRight(400);
-					break;
-				case 3:
-					this.moveLeft();
+				if(!this.isTouchOtherBadTank()){
+					 
+					switch(this.dir){
+					case 0:
+						this.moveDown(300);
+						break;
+					case 1:
+						this.moveTop();
+						break;
+					case 2:
+						this.moveRight(400);
+						break;
+					case 3:
+						this.moveLeft();
+						break;
+					}
+				}else{
+					 
 					break;
 				}
 				try {
@@ -230,9 +448,15 @@ class BadTanks extends Tanks implements Runnable{
 					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
+					
+
 			}
 			
 			//动态修改随机的方向
+			double rmd = Math.random();
+			if(rmd >= 0.7 && rmd <= 0.8){
+				rmd = 0;
+			}
 			this.dir = (int)(Math.random() * 4);
 			if(!this.isLive){
 				break;

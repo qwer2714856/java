@@ -78,7 +78,7 @@ class TankPanel extends JPanel implements KeyListener,Runnable{
 	private int activityW = 400;
 	private int activityH = 300;
 	//定义初始化多少个敌人坦克
-	private int numBadTank = 5;
+	private int numBadTank = 3;
 	
 	
 	public TankPanel(){
@@ -86,7 +86,7 @@ class TankPanel extends JPanel implements KeyListener,Runnable{
 		//this.badTank = new BadTanks(200,200); 
 		//初始话敌人的坦克
 		for(int i = 0; i < this.numBadTank; i++){
-			BadTanks badTank = new BadTanks((i+1)*60,0);
+			BadTanks badTank = new BadTanks((i)*140,0);
 			this.badTanksList.add(badTank);
 			Thread thread = new Thread(badTank);
 			thread.start();
@@ -94,6 +94,7 @@ class TankPanel extends JPanel implements KeyListener,Runnable{
 			//给敌人加上武器子弹
 			badTank.fire(this.activityW, this.activityH);
 		}
+		BadTanks.badTankList = this.badTanksList;
 		
 		//初始化爆炸图片--三张图片组合为一个炮炸效果
 		/*this.image1 = Toolkit.getDefaultToolkit().getImage(Panel.class.getResource("/tp/bz.png"));
@@ -146,7 +147,8 @@ class TankPanel extends JPanel implements KeyListener,Runnable{
 					}
 				}
 			}else{
-				this.badTanksList.remove(bt);
+				this.badTanksList.remove(bt); 
+				BadTanks.badTankList.remove(bt);
 			}
 		}
 		
