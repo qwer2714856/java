@@ -7,6 +7,23 @@ import java.io.*;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
+/**
+ * 坦克的需求文档
+ * 1.画出坦克
+ * 2.我的坦克可以上下左右运动
+ * 3.可以发射子弹最多5发
+ * 4.当我的坦克击中敌人的坦克，敌人的坦克就消失（要求有爆炸效果）
+ * 5.我被击中有爆照效果
+ * 6.防止敌人坦克重叠运动
+ * 7.可以分关
+ * 8.可以在玩游戏的时候暂停或开始
+ * 9.可以记录玩家的分数
+ * 10.java的声音操作
+ * @author Administrator
+ *
+ */
+
+
 public class tank extends JFrame{
 	public TankPanel tp = null;
 	/**
