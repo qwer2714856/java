@@ -40,7 +40,7 @@ public class tank extends JFrame implements ActionListener{
 	
 
 	public tank(){
-		this.tp = new TankPanel();
+		
 		this.mps = new MyPanelStart();
 		//菜单定义
 		this.jmb = new JMenuBar();
@@ -61,12 +61,9 @@ public class tank extends JFrame implements ActionListener{
 		Thread thread2 = new Thread(this.mps);
 		thread2.start();
 		this.add(this.mps);
-		
-		//做出我需要的菜单
-		
-		
+				
 		this.setTitle("丁陆超PK姜丽丽");
-		this.setSize(400,400);
+		this.setSize(600,600);
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		this.setResizable(false);
 		this.setVisible(true);
@@ -81,6 +78,7 @@ public class tank extends JFrame implements ActionListener{
 			//加入之前要删除旧的
 			this.remove(this.mps);
 			
+			this.tp = new TankPanel();
 			//启动刷新线程
 			Thread thread = new Thread(this.tp);
 			thread.start();
@@ -170,6 +168,17 @@ class TankPanel extends JPanel implements KeyListener,Runnable{
 		//设置JPanel的活动区域
 		g.setColor(Color.gray);
 		g.fillRect(0, 0, this.activityW, this.activityH);
+		
+		//画出提示信息坦克（该坦克不参与战斗）
+		this.createTank(10, 320, g, 1, 1, null, Color.yellow);
+		this.createTank(200, 320, g, 1, 1, null, Color.red);
+		//画出我方坦克，和敌人坦克的量
+		g.setColor(Color.black);
+		g.drawString("您的生命剩余："+Recorder.getMyLife(), 40, 340);
+		g.drawString("敌人坦克剩余："+Recorder.getBadTanKNum(), 230, 340);
+		
+		
+		
 		
 		//开始画自己坦克图片
 		if(this.myTank.isLive){
@@ -359,11 +368,11 @@ class TankPanel extends JPanel implements KeyListener,Runnable{
 		
 		if(isHit){
 			//算血量如果血量够就减去血不死
-			int life = tk.getLife();
-			if(life < 1){
+			int life = Recorder.getMyLife();
+			if(life <= 1){
 				tk.isLive = false;
 			}else{
-				tk.setLife(--life);
+				Recorder.setMyLife(--life);
 			}
 			
 			b.isLive = false;
@@ -453,7 +462,7 @@ class TankPanel extends JPanel implements KeyListener,Runnable{
 		}
 		
 		//第一次初始化坦克们的尺寸 结果根据下面的计算得出
-		if(tk.getSizeH() == 0){
+		if(tk != null && tk.getSizeH() == 0){
 			tk.setSizeH(36);
 			tk.setSizeCz(6);
 		}

@@ -787,5 +787,31 @@ public void run() {
 	}
 }
 }
+/**
+ * 保存或者读取玩家的一些记录
+ * @author Administrator
+ *
+ */
+class Recorder {
+	//记录每一关有多少敌人
+	private static int badTanKNum = 20;
+	//设置我有多少条命
+	private static int myLife = 2;
+	
+	
+	
+	public static int getBadTanKNum() {
+		return badTanKNum;
+	}
+	public static void setBadTanKNum(int badTanKNum) {
+		Recorder.badTanKNum = badTanKNum;
+	}
+	public static int getMyLife() {
+		return myLife;
+	}
+	public static void setMyLife(int myLife) {
+		Recorder.myLife = myLife;
+	}
 
-
+	
+}
