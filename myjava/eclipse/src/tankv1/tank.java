@@ -1,7 +1,6 @@
 package tankv1;
 import java.awt.*;
-import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
+import java.awt.event.*;
 import java.util.*;
 import java.io.*;
 
@@ -24,8 +23,13 @@ import javax.swing.*;
  */
 
 
-public class tank extends JFrame{
+public class tank extends JFrame implements ActionListener{
 	public TankPanel tp = null;
+	public MyPanelStart mps = null;
+	//菜单
+	private JMenuBar jmb = null;
+	private JMenu jm = null;
+	private JMenuItem jmt = null;
 	/**
 	 * @param args
 	 */
@@ -37,18 +41,62 @@ public class tank extends JFrame{
 
 	public tank(){
 		this.tp = new TankPanel();
-		//启动刷新线程
-		Thread thread = new Thread(this.tp);
-		thread.start();
-		this.add(tp);
+		this.mps = new MyPanelStart();
+		//菜单定义
+		this.jmb = new JMenuBar();
+		this.jm = new JMenu("开始游戏(O)");
+		this.jm.setMnemonic('O');
+		this.jmt = new JMenuItem("开始(G)");
+		this.jmt.setMnemonic('G');
+		this.jmt.setIcon(new ImageIcon("a.jpg"));
+		this.setJMenuBar(this.jmb);
+		this.jmb.add(this.jm);
+		this.jm.add(this.jmt);
+		
+		//绑定事件
+		this.jmt.addActionListener(this);
+		this.jmt.setActionCommand("0");
+		
+		//现实关卡的panel
+		Thread thread2 = new Thread(this.mps);
+		thread2.start();
+		this.add(this.mps);
+		
+		//做出我需要的菜单
+		
+		
 		this.setTitle("丁陆超PK姜丽丽");
 		this.setSize(400,400);
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		this.setResizable(false);
 		this.setVisible(true);
-		this.addKeyListener(this.tp);
-	}
 
+	}
+	@Override
+	public void actionPerformed(ActionEvent e) {
+		// TODO Auto-generated method stub
+		//0 开始游戏
+		if(e.getActionCommand().equals("0")){
+			
+			//加入之前要删除旧的
+			this.remove(this.mps);
+			
+			//启动刷新线程
+			Thread thread = new Thread(this.tp);
+			thread.start();
+			
+			//作战的panel
+			this.add(this.tp);
+			
+			//注册监听
+			this.addKeyListener(this.tp);
+			
+			//显示即刷新JFrame
+			this.setVisible(true);
+		}else{
+			
+		}
+	}
 }
 
 /**
@@ -441,6 +489,13 @@ class TankPanel extends JPanel implements KeyListener,Runnable{
 			dir = 3;
 			this.myTank.moveLeft();
 			;break;
+		case KeyEvent.VK_ESCAPE:
+			if(Attribute.paused){
+				Attribute.paused = false;
+			}else{
+				Attribute.paused = true;
+			}
+			;break;
 		}
 		
 		if(e.getKeyCode() == KeyEvent.VK_SPACE && this.myTank.bulletList.size() < this.myTank.getBulletNum()){
@@ -494,13 +549,17 @@ class TankPanel extends JPanel implements KeyListener,Runnable{
 				e.printStackTrace();
 			}
 			
+			if(Attribute.paused){
+				continue;
+			}
+			
 			//好人打坏人的子弹和坦克状态
 			this.setIsLive(this.myTank.bulletList, this.badTanksList);
 			//坏人干掉好人
 			this.badKillGood(this.badTanksList, this.myTank);
 			
-			
-			this.repaint();
+			this.repaint();	
+
 		}
 	}
 }
@@ -511,8 +570,40 @@ class TankPanel extends JPanel implements KeyListener,Runnable{
  * @author Administrator
  *
  */
-class MyPanelStart extends JPanel{
+class MyPanelStart extends JPanel implements Runnable{
+	//定义活动范围
+	private int activityW = 400;
+	private int activityH = 300;
+	private int isShow = 1;
 	public void paint(Graphics g){
 		super.paint(g);
+		g.fillRect(0, 0, this.activityW, this.activityH);
+		//提示信息
+		if(this.isShow == 1){
+			g.setColor(Color.yellow);
+			g.setFont(new Font("华文新魏", Font.BOLD, 30));
+			g.drawString("stage: 1", 130, 150);
+		}
+	}
+
+	@Override
+	public void run() {
+		// TODO Auto-generated method stub
+		while(true){			
+			try {
+				Thread.sleep(150);
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			
+			if(this.isShow == 0){
+				this.isShow = 1;
+			}else{
+				this.isShow = 0;
+			}
+			
+			this.repaint();
+		}
 	}
 }

@@ -19,6 +19,9 @@ abstract class Tanks{
 	//定义大小的 构建坦克后初始化
 	int sizeH = 0;
 	int sizeCz = 0;
+	//记录步长
+	int saveStep = 20;
+
 	//身份 0 自己的坦克人1 坏人
 	int identity = 0;
 	//颜色
@@ -57,6 +60,12 @@ abstract class Tanks{
 	}
 	public void setColor(Color color) {
 		this.color = color;
+	}
+	public int getSaveStep() {
+		return saveStep;
+	}
+	public void setSaveStep(int saveStep) {
+		this.saveStep = saveStep;
 	}
 	public int getIdentity() {
 		return identity;
@@ -433,7 +442,16 @@ class BadTanks extends Tanks implements Runnable{
 		int flg2 = count;
 		// TODO Auto-generated method stub
 		while(true){
-			
+			//暂停了
+			if(Attribute.paused){
+				try {
+					Thread.sleep(50);
+				} catch (InterruptedException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				continue;
+			}
 			for(int i = 0; i < 10; i++){
 				//定义方向 1上 2右 0下 3左
 				if(!this.isTouchOtherBadTank()){
@@ -541,6 +559,7 @@ class BadTanks extends Tanks implements Runnable{
 class Bullet implements Runnable{
 	Color color = null;
 	int speed = 2;
+	int saveStep = 2;
 	int x = 0;
 	int y = 0;
 	int dir = 0;
@@ -553,7 +572,12 @@ class Bullet implements Runnable{
 	//子弹是否还活着
 	Boolean isLive = true;
 	
-	
+	public int getSaveStep() {
+		return saveStep;
+	}
+	public void setSaveStep(int saveStep) {
+		this.saveStep = saveStep;
+	}
 	public int getWidth() {
 		return width;
 	}
@@ -632,6 +656,15 @@ class Bullet implements Runnable{
 		int minX = 0;
 		int minY = 0;
 		while(true){
+			if(Attribute.paused){
+				try {
+					Thread.sleep(10);
+				} catch (InterruptedException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				continue;
+			}
 			//定义方向 1上 2右 0下 3左
 			switch(this.dir){
 				case 0:
@@ -731,6 +764,15 @@ class Bomb implements Runnable{
 public void run() {
 	// TODO Auto-generated method stub
 	while(true){
+		if(Attribute.paused){
+			try {
+				Thread.sleep(20);
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			continue;
+		}
 		if(this.isLive){
 			this.LifeDown();
 		}else{
