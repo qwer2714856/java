@@ -192,10 +192,15 @@ abstract class Tanks{
 class GoodTanks extends Tanks{
 	public GoodTanks(int x, int y){
 		super(x, y);
+		this.life = Recorder.getMyLife();
 		this.setIdentity(0);
 		this.setDir(1);
 		this.setColor(Color.yellow);	
-	}	
+	}
+	public void setLife(int life) {
+		this.life = life;
+		Recorder.setMyLife(life);
+	}
 }
 /**
  * »µÌ¹¿Ë

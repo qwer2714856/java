@@ -368,11 +368,11 @@ class TankPanel extends JPanel implements KeyListener,Runnable{
 		
 		if(isHit){
 			//算血量如果血量够就减去血不死
-			int life = Recorder.getMyLife();
-			if(life <= 1){
+			int life = tk.getLife();
+			if(life < 1){
 				tk.isLive = false;
 			}else{
-				Recorder.setMyLife(--life);
+				tk.setLife(--life);
 			}
 			
 			b.isLive = false;
