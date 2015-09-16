@@ -34,6 +34,7 @@ public class tank extends JFrame{
 		tank init = new tank();
 	}
 	
+
 	public tank(){
 		this.tp = new TankPanel();
 		//启动刷新线程
@@ -78,7 +79,7 @@ class TankPanel extends JPanel implements KeyListener,Runnable{
 	private int activityW = 400;
 	private int activityH = 300;
 	//定义初始化多少个敌人坦克
-	private int numBadTank = 3;
+	private int numBadTank = 7;
 	
 	
 	public TankPanel(){
@@ -86,7 +87,7 @@ class TankPanel extends JPanel implements KeyListener,Runnable{
 		//this.badTank = new BadTanks(200,200); 
 		//初始话敌人的坦克
 		for(int i = 0; i < this.numBadTank; i++){
-			BadTanks badTank = new BadTanks((i)*140,0);
+			BadTanks badTank = new BadTanks((i)*30,0);
 			this.badTanksList.add(badTank);
 			Thread thread = new Thread(badTank);
 			thread.start();
@@ -501,5 +502,17 @@ class TankPanel extends JPanel implements KeyListener,Runnable{
 			
 			this.repaint();
 		}
+	}
+}
+
+
+/**
+ * 自定义关卡
+ * @author Administrator
+ *
+ */
+class MyPanelStart extends JPanel{
+	public void paint(Graphics g){
+		super.paint(g);
 	}
 }

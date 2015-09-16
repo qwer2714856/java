@@ -226,8 +226,8 @@ class BadTanks extends Tanks implements Runnable{
 			pRx = x + 5 + 10 + 5;
 			pRy = y - 5;
 			
-			for(int i = 0; i < this.badTankList.size(); i++){
-				BadTanks otherBadTank = this.badTankList.get(i);
+			for(int i = 0; i < BadTanks.badTankList.size(); i++){
+				BadTanks otherBadTank = BadTanks.badTankList.get(i);
 				if(otherBadTank != this){
 					switch(otherBadTank.getDir()){
 					 case 1:
@@ -255,10 +255,11 @@ class BadTanks extends Tanks implements Runnable{
 						 inRy = otherBadTank.getY() + 5 + 10 + 5;
 						 break;
 					 }
-					if((pLx >= inLx && pLx <= inRx && pRy - this.speed <= inRy) || 
-					   (pRx <= inRx && pRx >= inLx && pRy - this.speed <= inRy)
+					if(pLx >= inLx && pLx <= inRx && (pRy - this.speed) <= inRy && (y + 30) > inRy || 
+					   pRx <= inRx && pRx >= inLx && (pRy - this.speed) <= inRy && (y + 30) > inRy
 					){
 					    b = true;
+					    break;
 					}
 				}
 			}
@@ -273,8 +274,8 @@ class BadTanks extends Tanks implements Runnable{
 			pRx = x + 23 + 12;
 			pRy = y + 5 + 10 + 5;
 			
-			for(int i = 0; i < this.badTankList.size(); i++){
-				BadTanks otherBadTank = this.badTankList.get(i);
+			for(int i = 0; i < BadTanks.badTankList.size(); i++){
+				BadTanks otherBadTank = BadTanks.badTankList.get(i);
 				if(otherBadTank != this){
 					switch(otherBadTank.getDir()){
 					case 1:
@@ -302,8 +303,8 @@ class BadTanks extends Tanks implements Runnable{
 						 inRy = otherBadTank.getY() + 5 + 10 + 5;
 						 break;
 					 }
-					if(pLy >= inLy && pLy <= inRy && (pRx + this.speed >= inRx) || 
-					   pRy >= inLy && pRy <= inRy && (pRx + this.speed >= inRx)
+					if(pLy >= inLy && pLy <= inRy && (pRx + this.speed) >= inRx && x < inRx || 
+					   pRy >= inLy && pRy <= inRy && (pRx + this.speed) >= inRx && x < inRx 
 					 ){
 					    b = true;  
 					    break;
@@ -321,9 +322,14 @@ class BadTanks extends Tanks implements Runnable{
 			pLy = y + 12 + 23;
 			pRx = x + 5 + 10 + 5;
 			pRy = y + 12 + 23;
-			
-			for(int i = 0; i < this.badTankList.size(); i++){
-				BadTanks otherBadTank = this.badTankList.get(i);
+			int bkI = 0;
+			for(int i = 0; i < BadTanks.badTankList.size(); i++){
+				BadTanks otherBadTank = BadTanks.badTankList.get(i);
+				//System.out.println("判断========="+(otherBadTank != this));
+				
+				if(otherBadTank == this){
+					bkI = i;
+				}
 				if(otherBadTank != this){
 					switch(otherBadTank.getDir()){
 					case 1:
@@ -352,12 +358,16 @@ class BadTanks extends Tanks implements Runnable{
 						 break;
 					 }
 				
-				if((pLx >= inLx && pLx <= inRx && pRy + this.speed >= inRy) || 
-				   (pRx <= inRx && pRx >= inLx && pRy + this.speed >= inRy)
+				if(pLx >= inLx && pLx <= inRx && (pRy + this.speed) >= inRy && y < inRy || 
+				   pRx <= inRx && pRx >= inLx && (pRy + this.speed) >= inRy && y < inRy
 				){
 				    b = true;
+				    //System.out.println("pRy + this.speed="+(pRy + this.speed)+",inRy="+inRy+",参照坦克="+i+",我是"+bkI);
+				    break;
 				}
+				
 				}
+				//System.out.println("pRy + this.speed="+(pRy + this.speed)+",inRy="+inRy+",b="+b);
 			}
 			
 			break;
@@ -368,8 +378,8 @@ class BadTanks extends Tanks implements Runnable{
 			pRx = x - 5;
 			pRy = y + 5 + 10 + 5;
 			
-			for(int i = 0; i < this.badTankList.size(); i++){
-				BadTanks otherBadTank = this.badTankList.get(i);
+			for(int i = 0; i < BadTanks.badTankList.size(); i++){
+				BadTanks otherBadTank = BadTanks.badTankList.get(i);
 				if(otherBadTank != this){
 					switch(otherBadTank.getDir()){
 					case 1:
@@ -398,10 +408,11 @@ class BadTanks extends Tanks implements Runnable{
 						 break;
 					 }
 				
-				if((pLy >= inLy && pLy <= inRy && pRx - this.speed <= inRx) || 
-				   (pRy <= inRy && pRy >= inLy && pRx - this.speed <= inRx)
+				if(pLy >= inLy && pLy <= inRy && (pRx - this.speed) <= inRx && (x + 30) > inRx || 
+				   pRy <= inRy && pRy >= inLy && (pRx - this.speed) <= inRx && (x + 30) > inRx
 				){
 				   b = true;
+				   break;
 				}
 				}
 			}
@@ -410,7 +421,7 @@ class BadTanks extends Tanks implements Runnable{
 		}
 		
 		
-		
+		//System.out.println(b);
 		
 		return b;
 	}
@@ -426,7 +437,6 @@ class BadTanks extends Tanks implements Runnable{
 			for(int i = 0; i < 10; i++){
 				//定义方向 1上 2右 0下 3左
 				if(!this.isTouchOtherBadTank()){
-					 
 					switch(this.dir){
 					case 0:
 						this.moveDown(300);
@@ -442,7 +452,6 @@ class BadTanks extends Tanks implements Runnable{
 						break;
 					}
 				}else{
-					 
 					break;
 				}
 				try {
@@ -454,58 +463,63 @@ class BadTanks extends Tanks implements Runnable{
 					
 
 			}
-			
-			//动态修改随机的方向
-			double rmd = Math.random();
-			if(--flg > (int)count/2){
-				if(rmd >= 0.5 && rmd <= 0.55 || rmd >= 0.80 && rmd <= 0.85){
-					rmd = 0;
-				}
-			}else{
-				if(rmd >= 0.5 && rmd <= 0.55 || rmd >= 0.80 && rmd <= 0.85){
-					rmd = 0.3;
+			 
+		
+				//动态修改随机的方向
+				//double rmd = Math.random();
+				/*if(--flg > (int)count/2){
+					if(rmd >= 0.5 && rmd <= 0.55 || rmd >= 0.80 && rmd <= 0.85){
+						rmd = 0;
+					}
+				}else{
+					if(rmd >= 0.5 && rmd <= 0.55 || rmd >= 0.80 && rmd <= 0.85){
+						rmd = 0.3;
+					}
+					
 				}
 				
-			}
-			
-			if(--flg2 > (int)count/2){
-				if(rmd >= 0.56 && rmd <= 0.66 || rmd >= 0.86 && rmd <= 0.96){
-					rmd = 0.55;
+				if(--flg2 > (int)count/2){
+					if(rmd >= 0.5 && rmd <= 0.66 || rmd >= 0.85 && rmd <= 0.96){
+						rmd = 0.55;
+					}
+				}else{
+					if(rmd >= 0.56 && rmd <= 0.66 || rmd >= 0.86 && rmd <= 0.96){
+						rmd = 0.9;
+					}
 				}
-			}else{
-				if(rmd >= 0.56 && rmd <= 0.66 || rmd >= 0.86 && rmd <= 0.96){
-					rmd = 0.9;
+				//System.out.println(flg2);
+				
+				
+				if(flg <= 0){
+					flg = count;
 				}
-			}
-			//System.out.println(flg2);
-			
-			
-			if(flg <= 0){
-				flg = count;
-			}
-			if(flg2 <= 0){
-				flg2 = count;
-			}
-			
-			//System.out.println(flg);
-			this.dir = (int)(rmd * 4);
-			
-			 if(this.isTouchOtherBadTank()){
-				 switch(this.dir){
-					case 0:
-						this.dir = 3;
-						break;
-					case 1:
-						this.dir = 2;
-						break;
-					case 2:
-						this.dir = 1;
-						break;
-					case 3:
-						this.dir = 0;
+				if(flg2 <= 0){
+					flg2 = count;
+				}*/
+				
+				//System.out.println(flg);
+
+				this.dir = (int)(Math.random() * 4);
+				
+				while(true){
+					if(this.isTouchOtherBadTank()){
+
+						this.dir = (int)(Math.random() * 4);
+						
+						//System.out.println("dir="+this.dir+",id="+Thread.currentThread().getId()+",status="+this.isTouchOtherBadTank());
+						/*for(int i = 0; i < BadTanks.badTankList.size(); i++){
+							if(this == BadTanks.badTankList.get(i)){
+								System.out.println(i);
+							}
+						}*/
+						
+					}else{
+						//System.out.println("--");
 						break;
 					}
-			 }
+				}
+				
+
 			
 			if(!this.isLive){
 				break;
@@ -515,7 +529,8 @@ class BadTanks extends Tanks implements Runnable{
 			if(this.bulletList.size() < this.getBulletNum()){
 				this.fire(400, 300);
 			}
-			
+			//System.out.println(this.isTouchOtherBadTank());
+			//break;
 		}
 	}
 }
@@ -730,3 +745,5 @@ public void run() {
 	}
 }
 }
+
+
