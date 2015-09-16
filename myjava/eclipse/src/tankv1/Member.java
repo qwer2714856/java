@@ -799,12 +799,22 @@ public void run() {
  */
 class Recorder {
 	//记录每一关有多少敌人
-	private static int badTanKNum = 20;
+	private static int badTanKNum = 7;
 	//设置我有多少条命
 	private static int myLife = 2;
+	//记录总共杀死多少坦克
+	private static int killBadTanKNum = 0;
 	
-	
-	
+	//杀死坦克自增
+	public static void addKillBadTanKNum(){
+		Recorder.killBadTanKNum ++;
+	}
+	public static int getKillBadTanKNum() {
+		return killBadTanKNum;
+	}
+	public static void setKillBadTanKNum(int killBadTanKNum) {
+		Recorder.killBadTanKNum = killBadTanKNum;
+	}
 	public static int getBadTanKNum() {
 		return badTanKNum;
 	}
@@ -818,5 +828,7 @@ class Recorder {
 		Recorder.myLife = myLife;
 	}
 
-	
+	public static void lessen(){
+		Recorder.badTanKNum --;
+	}
 }

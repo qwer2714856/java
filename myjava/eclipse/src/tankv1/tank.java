@@ -30,6 +30,8 @@ public class tank extends JFrame implements ActionListener{
 	private JMenuBar jmb = null;
 	private JMenu jm = null;
 	private JMenuItem jmt = null;
+	private JMenuItem save = null;
+	private JMenuItem read = null;
 	/**
 	 * @param args
 	 */
@@ -48,10 +50,17 @@ public class tank extends JFrame implements ActionListener{
 		this.jm.setMnemonic('O');
 		this.jmt = new JMenuItem("开始(G)");
 		this.jmt.setMnemonic('G');
-		this.jmt.setIcon(new ImageIcon("a.jpg"));
+		//this.jmt.setIcon(new ImageIcon("a.jpg"));
+		this.save = new JMenuItem("保存(s)");
+		this.read = new JMenuItem("读取(r)");
+		this.save.setMnemonic('s');
+		this.read.setMnemonic('r');
+		
 		this.setJMenuBar(this.jmb);
 		this.jmb.add(this.jm);
 		this.jm.add(this.jmt);
+		this.jm.add(this.read);
+		this.jm.add(this.save);
 		
 		//绑定事件
 		this.jmt.addActionListener(this);
@@ -125,7 +134,7 @@ class TankPanel extends JPanel implements KeyListener,Runnable{
 	private int activityW = 400;
 	private int activityH = 300;
 	//定义初始化多少个敌人坦克
-	private int numBadTank = 7;
+	private int numBadTank = Recorder.getBadTanKNum();
 	
 	
 	public TankPanel(){
@@ -169,16 +178,8 @@ class TankPanel extends JPanel implements KeyListener,Runnable{
 		g.setColor(Color.gray);
 		g.fillRect(0, 0, this.activityW, this.activityH);
 		
-		//画出提示信息坦克（该坦克不参与战斗）
-		this.createTank(10, 320, g, 1, 1, null, Color.yellow);
-		this.createTank(200, 320, g, 1, 1, null, Color.red);
-		//画出我方坦克，和敌人坦克的量
-		g.setColor(Color.black);
-		g.drawString("您的生命剩余："+Recorder.getMyLife(), 40, 340);
-		g.drawString("敌人坦克剩余："+Recorder.getBadTanKNum(), 230, 340);
-		
-		
-		
+		//分数的坦克,提示信息
+		this.Recorder(g);
 		
 		//开始画自己坦克图片
 		if(this.myTank.isLive){
@@ -207,6 +208,10 @@ class TankPanel extends JPanel implements KeyListener,Runnable{
 			}else{
 				this.badTanksList.remove(bt); 
 				BadTanks.badTankList.remove(bt);
+				//从总队列里面删除
+				Recorder.lessen();
+				//增加杀死的坦克
+				Recorder.addKillBadTanKNum();
 			}
 		}
 		
@@ -236,6 +241,23 @@ class TankPanel extends JPanel implements KeyListener,Runnable{
 					}
 				}
 	}
+	
+	//画出提示信息
+	private void Recorder(Graphics g){
+		//画出提示信息坦克（该坦克不参与战斗）
+		this.createTank(10, 320, g, 1, 1, null, Color.yellow);
+		this.createTank(200, 320, g, 1, 1, null, Color.red);
+		//画出我方坦克，和敌人坦克的量
+		g.setColor(Color.black);
+		g.drawString("您的生命剩余："+Recorder.getMyLife(), 40, 340);
+		g.drawString("敌人坦克剩余："+Recorder.getBadTanKNum(), 230, 340);
+		//画出玩家的总成绩
+		g.setFont(new Font("宋体",Font.BOLD,20));
+		g.drawString("总分：" + Recorder.getKillBadTanKNum(), 450, 50);
+		//画一个敌人的坦克
+		this.createTank(420, 30, g, 1, 1, null, Color.RED);
+	}
+	
 	private void bombPlay(Bomb b, Graphics g){
 		int bs = (int)Math.ceil((double)b.getLife() / 3);
 		switch(bs){
@@ -520,10 +542,8 @@ class TankPanel extends JPanel implements KeyListener,Runnable{
 	}
 	//好人打坏人
 	private void setIsLive(Vector<Bullet> b, Vector<BadTanks> tk){	
-		int len = b.size();
-		int badTkLen = tk.size();
-		for(int i = 0; i < len; i++){
-			for(int j = 0; j < badTkLen; j++){
+		for(int i = 0; i < b.size(); i++){
+			for(int j = 0; j < tk.size(); j++){
 				this.setTankAndBulleatStatus(b.get(i), tk.get(j));
 			}
 		}		
