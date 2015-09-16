@@ -65,6 +65,12 @@ public class tank extends JFrame implements ActionListener{
 		//绑定事件
 		this.jmt.addActionListener(this);
 		this.jmt.setActionCommand("0");
+		//保存的绑定事件
+		this.save.addActionListener(this);
+		this.save.setActionCommand("1");
+		//绑定读取的事件
+		this.read.addActionListener(this);
+		this.read.setActionCommand("2");
 		
 		//现实关卡的panel
 		Thread thread2 = new Thread(this.mps);
@@ -78,30 +84,49 @@ public class tank extends JFrame implements ActionListener{
 		this.setVisible(true);
 
 	}
+	
+	private void addTpInJFrame(){
+		//加入之前要删除旧的
+		if(this.mps != null){
+			this.remove(this.mps);
+		}
+		if(this.tp != null){
+			this.remove(this.tp);
+		}
+		this.tp = new TankPanel();
+		//启动刷新线程
+		Thread thread = new Thread(this.tp);
+		thread.start();
+		
+		//作战的panel
+		this.add(this.tp);
+		
+		//注册监听
+		this.addKeyListener(this.tp);
+		
+		//显示即刷新JFrame
+		this.setVisible(true);
+	}
+	
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		// TODO Auto-generated method stub
 		//0 开始游戏
+		//1是保存进度
 		if(e.getActionCommand().equals("0")){
-			
-			//加入之前要删除旧的
-			this.remove(this.mps);
-			
-			this.tp = new TankPanel();
-			//启动刷新线程
-			Thread thread = new Thread(this.tp);
-			thread.start();
-			
-			//作战的panel
-			this.add(this.tp);
-			
-			//注册监听
-			this.addKeyListener(this.tp);
-			
-			//显示即刷新JFrame
-			this.setVisible(true);
+			//初始化数据
+			Recorder.resetData();
+			this.addTpInJFrame();
+
 		}else{
-			
+			if(e.getActionCommand().equals("1")){
+				Recorder.save();
+			}else{
+				if(e.getActionCommand().equals("2")){
+					Recorder.read();//读进数据来
+					this.addTpInJFrame();
+				}
+			}
 		}
 	}
 }

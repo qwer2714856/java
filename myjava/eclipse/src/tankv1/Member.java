@@ -1,6 +1,7 @@
 package tankv1;
 import java.awt.*;
 import java.util.*;
+import java.io.*;
 /**
  * 抽象类坦克
  * @author Administrator
@@ -798,13 +799,20 @@ public void run() {
  *
  */
 class Recorder {
+	//保存的文件路径
+	private static String path = "d:\\save.txt";
 	//记录每一关有多少敌人
 	private static int badTanKNum = 7;
 	//设置我有多少条命
-	private static int myLife = 2;
+	private static int myLife = 20;
 	//记录总共杀死多少坦克
 	private static int killBadTanKNum = 0;
-	
+	//初始化数据
+	public static void resetData(){
+		Recorder.badTanKNum = 7;
+		Recorder.killBadTanKNum = 0;
+		Recorder.myLife = 20;
+	}
 	//杀死坦克自增
 	public static void addKillBadTanKNum(){
 		Recorder.killBadTanKNum ++;
@@ -830,5 +838,59 @@ class Recorder {
 
 	public static void lessen(){
 		Recorder.badTanKNum --;
+	}
+	
+	//读取存档
+	public static void read(){
+		BufferedReader br = null;
+		try {
+			br = new BufferedReader(new FileReader(Recorder.path));
+			String data = "";
+			try {
+				while((data=br.readLine()) != null){
+					String []name = data.split(":");
+					if(name[0].equals("info")){
+						String []datas = name[1].split("-");
+						Recorder.killBadTanKNum = Integer.parseInt(datas[0]);
+						Recorder.myLife = Integer.parseInt(datas[1]);
+						Recorder.badTanKNum = Integer.parseInt(datas[2]);
+					}
+				}
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		} catch (FileNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}finally{
+			try {
+				br.close();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+	}
+	
+
+	
+	//保存存档
+	public static void save(){
+		BufferedWriter bw = null;
+		try {
+			bw = new BufferedWriter(new FileWriter(Recorder.path));
+			bw.write("info:" + Recorder.killBadTanKNum+"-"+Recorder.myLife+"-"+Recorder.badTanKNum);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}finally{
+			try {
+				bw.close();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
 	}
 }
