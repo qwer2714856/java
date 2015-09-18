@@ -67,9 +67,11 @@ class Px{
 					idx = j;
 				}
 			}
-			tmp = a[i];
-			a[i] = a[idx];
-			a[idx] = tmp;
+			if(idx != i){
+				tmp = a[i];
+				a[i] = a[idx];
+				a[idx] = tmp;
+			}
 		}
 		for(int i = 0; i < a.length; i++){
 			System.out.println(a[i]);
