@@ -9,7 +9,12 @@ import javax.sound.sampled.FloatControl;
 import javax.sound.sampled.LineUnavailableException; 
 import javax.sound.sampled.SourceDataLine; 
 import javax.sound.sampled.UnsupportedAudioFileException; 
- 
+/**
+ * 声音播放的原理讲解
+ * 以流的方式读进来，然后交给音频设备，然后不停的转转就播放起来了。 
+ * @author Administrator
+ *
+ */
 public class AePlayWave extends Thread { 
  
     private String filename;
@@ -77,6 +82,7 @@ public class AePlayWave extends Thread {
  
         auline.start();
         int nBytesRead = 0;
+        //缓冲的读出给到音频播放设备
         byte[] abData = new byte[EXTERNAL_BUFFER_SIZE];
  
         try { 

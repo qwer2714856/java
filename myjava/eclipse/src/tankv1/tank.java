@@ -20,6 +20,9 @@ import redio.AePlayWave;
  * 8.可以在玩游戏的时候暂停或开始
  * 9.可以记录玩家的分数
  * 10.java的声音操作
+ * 11.网络没做--待学完网络完全实现它
+ * 总结
+ * 
  * @author Administrator
  *
  */
