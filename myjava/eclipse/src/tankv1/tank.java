@@ -6,6 +6,8 @@ import java.io.*;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
+
+import redio.AePlayWave;
 /**
  * 坦克的需求文档
  * 1.画出坦克
@@ -32,6 +34,9 @@ public class tank extends JFrame implements ActionListener{
 	private JMenuItem jmt = null;
 	private JMenuItem save = null;
 	private JMenuItem read = null;
+	private JMenuItem exit = null;
+	//音频播放
+	AePlayWave yp = null;
 	/**
 	 * @param args
 	 */
@@ -48,19 +53,22 @@ public class tank extends JFrame implements ActionListener{
 		this.jmb = new JMenuBar();
 		this.jm = new JMenu("开始游戏(O)");
 		this.jm.setMnemonic('O');
-		this.jmt = new JMenuItem("开始(G)");
+		this.jmt = new JMenuItem("开始新游戏(G)");
 		this.jmt.setMnemonic('G');
 		//this.jmt.setIcon(new ImageIcon("a.jpg"));
-		this.save = new JMenuItem("保存(s)");
-		this.read = new JMenuItem("读取(r)");
+		this.save = new JMenuItem("保存外围(s)");
+		this.read = new JMenuItem("读取上一局(r)");
+		this.exit = new JMenuItem("退出系统全部保存(e)");
 		this.save.setMnemonic('s');
 		this.read.setMnemonic('r');
+		this.exit.setMnemonic('e');
 		
 		this.setJMenuBar(this.jmb);
 		this.jmb.add(this.jm);
 		this.jm.add(this.jmt);
 		this.jm.add(this.read);
 		this.jm.add(this.save);
+		this.jm.add(this.exit);
 		
 		//绑定事件
 		this.jmt.addActionListener(this);
@@ -71,7 +79,9 @@ public class tank extends JFrame implements ActionListener{
 		//绑定读取的事件
 		this.read.addActionListener(this);
 		this.read.setActionCommand("2");
-		
+		//绑定退出系统事件
+		this.exit.addActionListener(this);
+		this.exit.setActionCommand("3");
 		//现实关卡的panel
 		Thread thread2 = new Thread(this.mps);
 		thread2.start();
@@ -89,10 +99,24 @@ public class tank extends JFrame implements ActionListener{
 		//加入之前要删除旧的
 		if(this.mps != null){
 			this.remove(this.mps);
+			this.mps = null;
 		}
 		if(this.tp != null){
+			//kill 面板里面的线程否则，连续新游戏有问题
+			this.tp.setPanelThreadStatus(false);
 			this.remove(this.tp);
+			this.tp = null;
 		}
+		
+		//启动音频
+		if(this.yp == null){
+			this.yp = new AePlayWave("tp\\love.wav");
+		}else{
+			this.yp.stop();
+			this.yp = new AePlayWave("tp\\love.wav");
+		}
+		this.yp.start();
+		
 		this.tp = new TankPanel();
 		//启动刷新线程
 		Thread thread = new Thread(this.tp);
@@ -113,18 +137,37 @@ public class tank extends JFrame implements ActionListener{
 		// TODO Auto-generated method stub
 		//0 开始游戏
 		//1是保存进度
+		//2读取进度
+		//3退出系统-同时要有保存的功能
 		if(e.getActionCommand().equals("0")){
+			//新游戏
+			Recorder.setNews(true);
 			//初始化数据
 			Recorder.resetData();
+			//读取总分
+			Recorder.readScore();
+			
 			this.addTpInJFrame();
 
 		}else{
+			//保存退出
 			if(e.getActionCommand().equals("1")){
 				Recorder.save();
+				//退出
+				System.exit(0);
 			}else{
 				if(e.getActionCommand().equals("2")){
-					Recorder.read();//读进数据来
+					//续上局
+					Recorder.setNews(false);
+					Recorder.readAll();//读进数据来
 					this.addTpInJFrame();
+				}else{
+					if(e.getActionCommand().equals("3")){
+						//保存一下
+						Recorder.saveAll();
+						//退出
+						System.exit(0);
+					}
 				}
 			}
 		}
@@ -147,7 +190,8 @@ class TankPanel extends JPanel implements KeyListener,Runnable{
 	//定义坏人坦克,线程机制使用Vector
 	private Vector<BadTanks> badTanksList = new Vector<BadTanks>();
 	//private BadTanks badTank = null;
-	
+	//panel线程的状态
+	private Boolean panelThreadStatus = true;
 	//定义爆炸的图片
 	private Image image1 = null;
 	private Image image2 = null;
@@ -161,22 +205,46 @@ class TankPanel extends JPanel implements KeyListener,Runnable{
 	//定义初始化多少个敌人坦克
 	private int numBadTank = Recorder.getBadTanKNum();
 	
+	public Boolean getPanelThreadStatus() {
+		return panelThreadStatus;
+	}
+
+	public void setPanelThreadStatus(Boolean panelThreadStatus) {
+		this.panelThreadStatus = panelThreadStatus;
+	}
 	
 	public TankPanel(){
-		this.myTank = new GoodTanks(100,264);
-		//this.badTank = new BadTanks(200,200); 
-		//初始话敌人的坦克
-		for(int i = 0; i < this.numBadTank; i++){
-			BadTanks badTank = new BadTanks((i)*30,0);
-			this.badTanksList.add(badTank);
-			Thread thread = new Thread(badTank);
-			thread.start();
-
-			//给敌人加上武器子弹
-			badTank.fire(this.activityW, this.activityH);
+		//新游戏
+		if(Recorder.getNews()){
+			this.myTank = new GoodTanks(100,264);
+			//this.badTank = new BadTanks(200,200); 
+			//初始话敌人的坦克
+			for(int i = 0; i < this.numBadTank; i++){
+				BadTanks badTank = new BadTanks((i)*30,0);
+				this.badTanksList.add(badTank);
+				Thread thread = new Thread(badTank);
+				thread.start();
+	
+				//给敌人加上武器子弹
+				badTank.fire(this.activityW, this.activityH);
+			}
+		}else{
+			//续上局
+			//初始化好坦克
+			this.myTank = new GoodTanks(Recorder.getGoodTankNode().getX(), Recorder.getGoodTankNode().getY(), Recorder.getGoodTankNode().getDir());
+			//初始化坏人
+			for(int i = 0; i < Recorder.getNdList().size();i++){
+				Node nd = Recorder.getNdList().get(i);
+				BadTanks badTank = new BadTanks(nd.getX(), nd.getY(), nd.getDir());
+				this.badTanksList.add(badTank);
+				Thread thread = new Thread(badTank);
+				thread.start();
+				badTank.fire(this.activityW, this.activityH);
+			}
 		}
 		BadTanks.badTankList = this.badTanksList;
-		
+		Recorder.setBadTankList(this.badTanksList);
+		Recorder.setGoodTank(this.myTank);
 		//初始化爆炸图片--三张图片组合为一个炮炸效果
 		/*this.image1 = Toolkit.getDefaultToolkit().getImage(Panel.class.getResource("/tp/bz.png"));
 		this.image2 = Toolkit.getDefaultToolkit().getImage(Panel.class.getResource("/tp/bz2.png"));
@@ -414,6 +482,7 @@ class TankPanel extends JPanel implements KeyListener,Runnable{
 		}
 		
 		if(isHit){
+			//System.out.println("--");
 			//算血量如果血量够就减去血不死
 			int life = tk.getLife();
 			if(life < 1){
@@ -595,7 +664,7 @@ class TankPanel extends JPanel implements KeyListener,Runnable{
 	//刷新线程
 	public void run() {
 		// TODO Auto-generated method stub
-		while(true){
+		while(panelThreadStatus){
 			try {
 				Thread.sleep(5);
 			} catch (InterruptedException e) {

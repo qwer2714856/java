@@ -2256,6 +2256,9 @@ while((n = fd.read(c)) != -1){
 }
 这里有个问题要注意下，如果char读取的很大如果file本身很小就会使用其它字符不缺所以这个定义也挺重要的。
 
+file的关闭原则
+后打开的先关闭，和关门一样。
+
 
 eclipse
 java 最后的项目是以工程的形式管理的，不过多大的项目，散列的file是没有意义的。
@@ -2300,6 +2303,9 @@ eclipse 项目拷贝
 2.粘贴到你的硬盘
 3.别的机器import -> General -> Existing Projects into Workspace -> Select root directory -> Copy projects into workspace(如果选择这个相当于将项目拷贝到工作空间，不选相当于在原有的项目上直接修改。)
 
+
+eclipse 调试
+设断点以后debug 后找到Expressions->右键add->输入你想检测的语句
 
 =========================作用域=======================
 //作用于的概念 函数作用域

@@ -2,6 +2,38 @@ package tankv1;
 import java.awt.*;
 import java.util.*;
 import java.io.*;
+
+//记录点
+class Node{
+	int x = 0;
+	int y = 0;
+	int dir = 0;
+	public Node(int x, int y, int dir){
+		this.x = x;
+		this.y = y;
+		this.dir = dir;
+	}
+	public int getX() {
+		return x;
+	}
+	public void setX(int x) {
+		this.x = x;
+	}
+	public int getY() {
+		return y;
+	}
+	public void setY(int y) {
+		this.y = y;
+	}
+	public int getDir() {
+		return dir;
+	}
+	public void setDir(int dir) {
+		this.dir = dir;
+	}
+}
+
+
 /**
  * 抽象类坦克
  * @author Administrator
@@ -198,7 +230,15 @@ class GoodTanks extends Tanks{
 		this.setDir(1);
 		this.setColor(Color.yellow);	
 	}
+	public GoodTanks(int x, int y, int dir){
+		super(x, y);
+		this.life = Recorder.getMyLife();
+		this.setIdentity(0);
+		this.setDir(dir);
+		this.setColor(Color.yellow);	
+	}
 	public void setLife(int life) {
+		//System.out.println(life);
 		this.life = life;
 		Recorder.setMyLife(life);
 	}
@@ -217,6 +257,14 @@ class BadTanks extends Tanks implements Runnable{
 		this.setColor(Color.red);
 		this.setSpeed(1);
 		this.setLife(1);
+	}
+	public BadTanks(int x, int y, int dir){
+		super(x, y);
+		this.setIdentity(1);
+		this.setColor(Color.red);
+		this.setSpeed(1);
+		this.setLife(1);
+		this.setDir(dir);
 	}
 	public boolean isTouchOtherBadTank(){
 		Boolean b = false;
@@ -799,6 +847,8 @@ public void run() {
  *
  */
 class Recorder {
+	//标志位代表新游戏或者是读取上一局
+	private static Boolean news = true;
 	//保存的文件路径
 	private static String path = "d:\\save.txt";
 	//记录每一关有多少敌人
@@ -807,6 +857,29 @@ class Recorder {
 	private static int myLife = 20;
 	//记录总共杀死多少坦克
 	private static int killBadTanKNum = 0;
+	//读取的时候坏人坦克的队列
+	private static Vector<Node> ndList = null;
+	//读取好人坦克的队列
+	private static Node goodTankNode = null;
+	
+	//坏人坦克
+	private static Vector<BadTanks> badTankList = null;
+	//好人坦克
+	private static GoodTanks goodTank = null;
+	
+	
+	public static Vector<BadTanks> getBadTankList() {
+		return badTankList;
+	}
+	public static void setBadTankList(Vector<BadTanks> badTankList) {
+		Recorder.badTankList = badTankList;
+	}
+	public static GoodTanks getGoodTank() {
+		return goodTank;
+	}
+	public static void setGoodTank(GoodTanks goodTank) {
+		Recorder.goodTank = goodTank;
+	}
 	//初始化数据
 	public static void resetData(){
 		Recorder.badTanKNum = 7;
@@ -835,16 +908,79 @@ class Recorder {
 	public static void setMyLife(int myLife) {
 		Recorder.myLife = myLife;
 	}
-
+	public static Vector<Node> getNdList() {
+		return ndList;
+	}
+	public static void addNodeToList(Node nd){
+		Recorder.ndList.add(nd);
+	}
+	public static void setNdList(Vector<Node> ndList) {
+		Recorder.ndList = ndList;
+	}
 	public static void lessen(){
 		Recorder.badTanKNum --;
 	}
+	public static Node getGoodTankNode() {
+		return goodTankNode;
+	}
+	public static Boolean getNews() {
+		return news;
+	}
+	public static void setNews(Boolean news) {
+		Recorder.news = news;
+	}
+	public static void setGoodTankNode(Node goodTankNode) {
+		Recorder.goodTankNode = goodTankNode;
+	}
+	//存档的完整性检查
+	//如果0只检查info的完整性
+	//如果1检查所有的完整性
+	private static boolean checkFileInfo(int i, String tmp){
+		
+		Boolean exit = false;
+		if(i == 0){
+			if(tmp == null){
+				exit = true;
+			}else{
+				String []tmp2 = tmp.split("info:");
+				if(tmp2.length < 2){
+					exit = true;
+				}else{
+					if(tmp2[1].split("-").length < 3){
+						exit = true;
+					}else{
+						String []t = tmp2[1].split("-");
+						int len = t.length;
+						for(int j = 0; j < len; j++){
+							try {
+								Integer.parseInt(t[j]);
+							} catch (NumberFormatException e) {
+								// TODO Auto-generated catch block
+								exit = true;
+							}
+						}
+						
+					}
+				}
+			}
+		}else{
+			if(i == 1){
+				//readAll没有做验证
+			}
+		}
+		
+		return exit;
+	}
 	
-	//读取存档
-	public static void read(){
+	//读取存档中的所有内容包括坦克坐标等等
+	public static void readAll(){
+		//初始化点的队列
+		Recorder.ndList = new Vector<Node>();
+		FileReader fd = null;
 		BufferedReader br = null;
 		try {
-			br = new BufferedReader(new FileReader(Recorder.path));
+			fd = new FileReader(Recorder.path);
+			br = new BufferedReader(fd);
 			String data = "";
 			try {
 				while((data=br.readLine()) != null){
@@ -855,17 +991,30 @@ class Recorder {
 						Recorder.myLife = Integer.parseInt(datas[1]);
 						Recorder.badTanKNum = Integer.parseInt(datas[2]);
 					}
+					if(name[0].equals("badtk")){
+						String []dataNode = name[1].split("-");
+						Node nd = new Node(Integer.parseInt(dataNode[0]), Integer.parseInt(dataNode[1]), Integer.parseInt(dataNode[2]));
+						Recorder.addNodeToList(nd);
+					}
+					if(name[0].equals("goodtk")){
+						String []dataNode = name[1].split("-");
+						Recorder.goodTankNode = new Node(Integer.parseInt(dataNode[0]), Integer.parseInt(dataNode[1]), Integer.parseInt(dataNode[2]));
+					}
 				}
 			} catch (IOException e) {
 				// TODO Auto-generated catch block
+				System.exit(0);
 				e.printStackTrace();
 			}
 		} catch (FileNotFoundException e) {
 			// TODO Auto-generated catch block
+			//如果文件没有找到直接退出
+			System.exit(0);
 			e.printStackTrace();
 		}finally{
 			try {
 				br.close();
+				fd.close();
 			} catch (IOException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
@@ -873,20 +1022,112 @@ class Recorder {
 		}
 	}
 	
-
+	//读取总分
+	public static void readScore(){
+		File f = new File(Recorder.path);
+		if(!f.exists()){
+			return;
+		}
+		FileReader fr = null;
+		BufferedReader br = null;
+		
+		try {
+			fr = new FileReader(Recorder.path);
+			br = new BufferedReader(fr);
+			try {
+				
+				String tmp = br.readLine();
+				
+				//检查数据的完整性 检查失败就不用继续下面的内容了
+				if(Recorder.checkFileInfo(0, tmp)){
+					return;
+				}
+				
+				String []data = tmp.split(":");
+				String []dataTmp = data[1].split("-");
+				Recorder.killBadTanKNum = Integer.parseInt(dataTmp[0]);
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		} catch (FileNotFoundException e) {
+			// TODO Auto-generated catch block
+			System.exit(0);
+			e.printStackTrace();
+		} finally {
+			try {
+				br.close();
+				fr.close();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+	}
 	
-	//保存存档
-	public static void save(){
+	//保存所有记录包括坦克的相关的详细信息
+	//外围信息的分割符info:
+	//坏人坦克分割符号badtk:x-y-dir
+	//好人坦克分割符号goodtk:x-y-dir
+	public static void saveAll(){
+		FileWriter fw = null;
 		BufferedWriter bw = null;
 		try {
-			bw = new BufferedWriter(new FileWriter(Recorder.path));
-			bw.write("info:" + Recorder.killBadTanKNum+"-"+Recorder.myLife+"-"+Recorder.badTanKNum);
+			fw = new FileWriter(Recorder.path);
+			bw = new BufferedWriter(fw);
+			String saveInfo = "";
+			//外围的相关信息
+			saveInfo += "info:" + Recorder.killBadTanKNum + "-" + Recorder.myLife+"-" + Recorder.badTanKNum + "\r\n";
+			//参战坦克的详细信息
+			//敌人的坐标
+			for(int i = 0; i < Recorder.badTankList.size(); i++){
+				BadTanks bt = Recorder.badTankList.get(i);
+				if(bt.isLive){
+					saveInfo += "badtk:" + bt.getX() + "-" + bt.getY() + "-" + bt.getDir() + "\r\n";
+				}
+			}
+			
+			//我的坐标
+			GoodTanks gt = Recorder.getGoodTank();
+			if(gt.isLive){
+				saveInfo += "goodtk:" + gt.getX() + "-" + gt.getY() + "-" + gt.getDir() + "\r\n";
+			}
+			 
+			//写入文件
+			bw.write(saveInfo);
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}finally{
 			try {
 				bw.close();
+				fw.close();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+	}
+	
+	//保存存档
+	public static void save(){
+		FileWriter fw = null;
+		BufferedWriter bw = null;
+		try {
+			fw = new FileWriter(Recorder.path);
+			bw = new BufferedWriter(fw);
+			bw.write("info:" + Recorder.killBadTanKNum + "-" + Recorder.myLife+"-" + Recorder.badTanKNum + "\r\n");
+			
+			//记录坦克的位置
+			
+			
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}finally{
+			try {
+				bw.close();
+				fw.close();
 			} catch (IOException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
@@ -894,3 +1135,5 @@ class Recorder {
 		}
 	}
 }
+
+
