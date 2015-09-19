@@ -21,9 +21,9 @@ public class ÅÅĞòÁªÏµ {
 		Calendar c = Calendar.getInstance();
 		long l = c.getTimeInMillis();
 		//a.mp(data);
-		a.xz(data);
+		//a.xz(data);
 		//a.quick(data, 0, data.length - 1);
-		//a.insertPx(data);
+		a.insertPx(data);
 		a.printArray(data);
 		Calendar c1 = Calendar.getInstance();
 		long l2 = c1.getTimeInMillis();
