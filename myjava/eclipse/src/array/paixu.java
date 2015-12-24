@@ -8,16 +8,16 @@ public class paixu {
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
 		Px p = new Px();
-		//»ñÈ¡Ê±¼ä
-		//µ¥ÊµÀı
-		//»ñÈ¡Ê±¼ä
+		//è·å–æ—¶é—´
+		//å•å®ä¾‹
+		//è·å–æ—¶é—´
 		Calendar c1 = Calendar.getInstance();
 		long c1s = c1.getTimeInMillis();
 		p.Ks(100000);
 		//p.Cr(100000);
 		//p.mp(100000);
 		//p.ks(100000);
-		//»ñÈ¡Ê±¼ä
+		//è·å–æ—¶é—´
 		Calendar c2 = Calendar.getInstance();
 		long c2s = c2.getTimeInMillis();
 		System.out.println("time="+(c2s-c1s));
@@ -27,7 +27,7 @@ public class paixu {
 
 class Px{
 	 double array [];
-	//Ã°ÅİÅÅĞò Ğ§ÂÊ×îµÍ
+	//å†’æ³¡æ’åº æ•ˆç‡æœ€ä½
 	public void mp(int count){
 		double a [] = new double[count];
 		for(int i = 0; i < a.length; i++){
@@ -50,7 +50,7 @@ class Px{
 	}
 	
 	
-	//Ñ¡ÔñÅÅĞò Ğ§ÂÊ±ÈÃ°Åİ¸ß
+	//é€‰æ‹©æ’åº æ•ˆç‡æ¯”å†’æ³¡é«˜
 	public void ks(int count){
 		double a [] = new double[count];
 		for(int i = 0; i < a.length; i++){
@@ -77,14 +77,14 @@ class Px{
 			System.out.println(a[i]);
 		}
 	}
-	//²åÈëÅÅĞò
+	//æ’å…¥æ’åº
 	public void Cr(int count){
 		double a [] = new double[count];
 		for(int i = 0; i < a.length; i++){
 			a[i] = i * Math.random();
 		}
 				
-		//²åÈëÅÅĞòË¼Ïë¾ÍÊÇÄÃ±¾ÉíºÍÇ°ÃæµÄÄÇĞ´½øĞĞ±È½Ï
+		//æ’å…¥æ’åºæ€æƒ³å°±æ˜¯æ‹¿æœ¬èº«å’Œå‰é¢çš„é‚£å†™è¿›è¡Œæ¯”è¾ƒ
 		for(int i = 1; i < a.length; i++){
 			double insertNode = a[i];
 			int prev = i - 1;
@@ -105,14 +105,14 @@ class Px{
 	public double [] getArray(){
 		return this.array;
 	}
-	//¿ìËÙÅÅĞò
+	//å¿«é€Ÿæ’åº
 	public void Ks(int count){
 		double a [] = new double[count];
 		for(int i = 0; i < a.length; i++){
 			a[i] = i * Math.random();
 		}
 		
-		//ºËĞÄË¼Ïë¾ÍÊÇÈ¡ÖĞ¼äÊı×óÓÒÁ½±ß£¬È»ºóÔÚÈ¡ÖĞ¼äÊı×óÓÒÁ½±ß¡£
+		//æ ¸å¿ƒæ€æƒ³å°±æ˜¯å–ä¸­é—´æ•°å·¦å³ä¸¤è¾¹ï¼Œç„¶ååœ¨å–ä¸­é—´æ•°å·¦å³ä¸¤è¾¹ã€‚
 		this._ks(0, a.length-1,a);
 		this.array = a;
 		for(int i = 0; i < a.length; i++){
@@ -121,9 +121,9 @@ class Px{
 	}
 	/**
 	 * 
-	 * @param left ×ó±ßÏÂ±ê
-	 * @param right ÓÒ±ßÏÂ±ê
-	 * @param arr Êı×é
+	 * @param left å·¦è¾¹ä¸‹æ ‡
+	 * @param right å³è¾¹ä¸‹æ ‡
+	 * @param arr æ•°ç»„
 	 */
 	private void _ks(int left, int right, double arr []){
 		 int l =left;
@@ -147,3 +147,38 @@ class Px{
 	}
 	
 }
+
+/**
+     * description : å¿«é€Ÿæ’åº
+     * @autor kwzhang
+     * modify :2012-6-20
+     *
+     * @param pData
+     * @param left
+     * @param right
+     * @return
+     */
+   /* static void quicksort(int n[], int left, int right) {
+        int dp;
+        if (left < right) {
+            dp = partition(n, left, right);
+            quicksort(n, left, dp - 1);
+            quicksort(n, dp + 1, right);
+        }
+    }
+ 
+    static int partition(int n[], int left, int right) {
+        int pivot = n[left];
+        while (left < right) {
+            while (left < right && n[right] >= pivot)
+                right--;
+            if (left < right)
+                n[left++] = n[right];
+            while (left < right && n[left] <= pivot)
+                left++;
+            if (left < right)
+                n[right--] = n[left];
+        }
+        n[left] = pivot;
+        return left;
+    }*/
